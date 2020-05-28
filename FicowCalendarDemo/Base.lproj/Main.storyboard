@@ -17,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="70" translatesAutoresizingMaskIntoConstraints="NO" id="iMr-Nm-d3Z">
-                                <rect key="frame" x="16" y="214" width="382" height="468"/>
+                                <rect key="frame" x="0.0" y="214" width="414" height="468"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dnZ-54-L14">
-                                        <rect key="frame" x="71" y="0.0" width="240" height="300"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="300" id="8jy-eV-GR6"/>
@@ -33,7 +33,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="qjQ-UK-vzt">
-                                                <rect key="frame" x="56" y="0.0" width="128" height="128"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="xyC-cQ-53w">
                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
@@ -43,7 +43,7 @@
                                         </cells>
                                     </collectionView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="vyT-92-VxU">
-                                        <rect key="frame" x="127" y="370" width="128" height="98"/>
+                                        <rect key="frame" x="143" y="370" width="128" height="98"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6fk-OE-lLq">
                                                 <rect key="frame" x="0.0" y="0.0" width="128" height="30"/>
@@ -76,7 +76,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="400" id="fHU-Ho-nbd"/>
-                                    <constraint firstItem="dnZ-54-L14" firstAttribute="width" secondItem="iMr-Nm-d3Z" secondAttribute="width" multiplier="0.628272" id="mA4-dG-2ZT"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -87,9 +86,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iMr-Nm-d3Z" secondAttribute="trailing" constant="16" id="XHY-le-KSl"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dnZ-54-L14" secondAttribute="trailing" id="CKu-R8-uMt"/>
                             <constraint firstItem="iMr-Nm-d3Z" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eIY-v6-Fxe"/>
-                            <constraint firstItem="iMr-Nm-d3Z" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="vDf-W5-FkY"/>
+                            <constraint firstItem="dnZ-54-L14" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="jWs-vb-k3g"/>
+                            <constraint firstItem="iMr-Nm-d3Z" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mga-tZ-86p"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

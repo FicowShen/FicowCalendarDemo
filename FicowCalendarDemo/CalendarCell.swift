@@ -1,11 +1,16 @@
 import UIKit
+import SnapKit
 
 final class CalendarCell: UICollectionViewCell {
 
     let textLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .darkGray
+        label.textColor = .black
         label.textAlignment = .center
+        #warning("DEL")
+        label.layer.cornerRadius = 4
+        label.layer.masksToBounds = true
+        label.backgroundColor = .lightGray
         return label
     }()
 
@@ -15,23 +20,14 @@ final class CalendarCell: UICollectionViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setup()
     }
 
     private func setup() {
         contentView.addSubview(textLabel)
-        textLabel.constraintToViewEdges(view: contentView)
-    }
-}
-
-extension UIView {
-    func constraintToViewEdges(view: UIView) {
-        translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topAnchor.constraint(equalTo: view.topAnchor),
-            bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
+        textLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
