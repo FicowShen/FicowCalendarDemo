@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
 
-    let calendar = MyCalendar()
+    let calendar = XOCalendar()
 
     override func viewDidLoad() {
         super.viewDidLoad()
