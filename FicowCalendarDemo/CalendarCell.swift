@@ -14,6 +14,19 @@ final class CalendarCell: UICollectionViewCell {
         return label
     }()
 
+    let underlineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .red
+        view.isHidden = true
+        return view
+    }()
+
+    var isToday = false {
+        didSet {
+            underlineView.isHidden = !isToday
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -25,9 +38,13 @@ final class CalendarCell: UICollectionViewCell {
     }
 
     private func setup() {
-        contentView.addSubview(textLabel)
+        [textLabel, underlineView].forEach(contentView.addSubview(_:))
         textLabel.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        underlineView.snp.makeConstraints {
+            $0.leading.bottom.trailing.equalToSuperview().inset(2)
+            $0.height.equalTo(2)
         }
     }
 }

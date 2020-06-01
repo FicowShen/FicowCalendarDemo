@@ -3,15 +3,7 @@ import SnapKit
 
 final class XOCalendarMonthHeaderView: UICollectionReusableView {
 
-    private static func makeLabel() -> UILabel {
-        let label = UILabel()
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 18)
-        return label
-    }
-
-    private let yearLabel = makeLabel()
-    private let monthLabel = makeLabel()
+    private let headerView = XOCalendarHeaderView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,8 +16,7 @@ final class XOCalendarMonthHeaderView: UICollectionReusableView {
     }
 
     func setup(year: String, month: String) {
-        yearLabel.text = year
-        monthLabel.text = month
+        headerView.setup(year: year, month: month)
     }
 
     private func setup() {
@@ -33,15 +24,9 @@ final class XOCalendarMonthHeaderView: UICollectionReusableView {
         backgroundColor = .lightGray
         clipsToBounds = true
 
-        [monthLabel, yearLabel].forEach(addSubview)
-        monthLabel.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().inset(32)
-        }
-        yearLabel.snp.makeConstraints {
-            $0.leading.equalTo(monthLabel.snp.trailing).offset(8)
-            $0.top.bottom.equalToSuperview()
-            $0.trailing.lessThanOrEqualToSuperview().inset(32)
+        addSubview(headerView)
+        headerView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }

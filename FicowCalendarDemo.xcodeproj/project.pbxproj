@@ -11,6 +11,9 @@
 		5DEE8EF3AFC28F267330BAEA /* Pods_FicowCalendarDemo_FicowCalendarDemoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18105B50AA691A6F8F65CCF6 /* Pods_FicowCalendarDemo_FicowCalendarDemoUITests.framework */; };
 		6AEB561D247F9D00005022ED /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB561C247F9D00005022ED /* Helpers.swift */; };
 		6AEB561F247FC5FC005022ED /* XOCalendarMonthHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB561E247FC5FC005022ED /* XOCalendarMonthHeaderView.swift */; };
+		896C27A12484C00A00EB0BA4 /* XOCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896C27A02484C00A00EB0BA4 /* XOCalendarView.swift */; };
+		896C27A32484E3E400EB0BA4 /* XOCalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896C27A22484E3E400EB0BA4 /* XOCalendarHeaderView.swift */; };
+		896C27A52484E42500EB0BA4 /* XOCalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896C27A42484E42500EB0BA4 /* XOCalendarFlowLayout.swift */; };
 		89BDDF7F247BB72C007D3F20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BDDF7E247BB72C007D3F20 /* AppDelegate.swift */; };
 		89BDDF81247BB72C007D3F20 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BDDF80247BB72C007D3F20 /* SceneDelegate.swift */; };
 		89BDDF83247BB72C007D3F20 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BDDF82247BB72C007D3F20 /* ViewController.swift */; };
@@ -48,6 +51,9 @@
 		6AEB561C247F9D00005022ED /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		6AEB561E247FC5FC005022ED /* XOCalendarMonthHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarMonthHeaderView.swift; sourceTree = "<group>"; };
 		813DDA497D29E3CCA57E219D /* Pods-FicowCalendarDemo-FicowCalendarDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FicowCalendarDemo-FicowCalendarDemoUITests.release.xcconfig"; path = "Target Support Files/Pods-FicowCalendarDemo-FicowCalendarDemoUITests/Pods-FicowCalendarDemo-FicowCalendarDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
+		896C27A02484C00A00EB0BA4 /* XOCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarView.swift; sourceTree = "<group>"; };
+		896C27A22484E3E400EB0BA4 /* XOCalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarHeaderView.swift; sourceTree = "<group>"; };
+		896C27A42484E42500EB0BA4 /* XOCalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarFlowLayout.swift; sourceTree = "<group>"; };
 		89BDDF7B247BB72C007D3F20 /* FicowCalendarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FicowCalendarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89BDDF7E247BB72C007D3F20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		89BDDF80247BB72C007D3F20 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -140,14 +146,17 @@
 				89BDDF7E247BB72C007D3F20 /* AppDelegate.swift */,
 				89BDDF80247BB72C007D3F20 /* SceneDelegate.swift */,
 				89BDDF82247BB72C007D3F20 /* ViewController.swift */,
-				6AEB561E247FC5FC005022ED /* XOCalendarMonthHeaderView.swift */,
 				89EDAAE8247E1598004098F6 /* CalendarCell.swift */,
 				6AEB561C247F9D00005022ED /* Helpers.swift */,
-				89EDAAEA247E190A004098F6 /* XOCalendar.swift */,
 				89BDDF84247BB72C007D3F20 /* Main.storyboard */,
 				89BDDF87247BB72F007D3F20 /* Assets.xcassets */,
 				89BDDF89247BB72F007D3F20 /* LaunchScreen.storyboard */,
 				89BDDF8C247BB72F007D3F20 /* Info.plist */,
+				89EDAAEA247E190A004098F6 /* XOCalendar.swift */,
+				896C27A02484C00A00EB0BA4 /* XOCalendarView.swift */,
+				6AEB561E247FC5FC005022ED /* XOCalendarMonthHeaderView.swift */,
+				896C27A22484E3E400EB0BA4 /* XOCalendarHeaderView.swift */,
+				896C27A42484E42500EB0BA4 /* XOCalendarFlowLayout.swift */,
 			);
 			path = FicowCalendarDemo;
 			sourceTree = "<group>";
@@ -419,13 +428,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				896C27A52484E42500EB0BA4 /* XOCalendarFlowLayout.swift in Sources */,
 				89BDDF83247BB72C007D3F20 /* ViewController.swift in Sources */,
 				6AEB561D247F9D00005022ED /* Helpers.swift in Sources */,
 				89EDAAEB247E190A004098F6 /* XOCalendar.swift in Sources */,
+				896C27A12484C00A00EB0BA4 /* XOCalendarView.swift in Sources */,
 				89BDDF7F247BB72C007D3F20 /* AppDelegate.swift in Sources */,
 				89BDDF81247BB72C007D3F20 /* SceneDelegate.swift in Sources */,
 				6AEB561F247FC5FC005022ED /* XOCalendarMonthHeaderView.swift in Sources */,
 				89EDAAE9247E1598004098F6 /* CalendarCell.swift in Sources */,
+				896C27A32484E3E400EB0BA4 /* XOCalendarHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
