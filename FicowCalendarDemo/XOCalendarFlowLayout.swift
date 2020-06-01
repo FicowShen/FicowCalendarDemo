@@ -26,7 +26,7 @@ final class XOCalendarFlowLayout: UICollectionViewFlowLayout {
         if let collectionView = collectionView {
             let xPageOffset = CGFloat(attributes.indexPath.section) * collectionView.frame.size.width
             let xCellOffset: CGFloat = xPageOffset + (CGFloat(attributes.indexPath.item % 7) * itemSize.width)
-            let yCellOffset: CGFloat = headerReferenceSize.height + (CGFloat(attributes.indexPath.item / 7) * itemSize.width)
+            let yCellOffset: CGFloat = headerReferenceSize.height + (CGFloat(attributes.indexPath.item / 7) * itemSize.height)
             attributes.frame = CGRect(x: xCellOffset,
                                       y: yCellOffset,
                                       width: itemSize.width,

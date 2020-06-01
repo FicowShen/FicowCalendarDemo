@@ -1,45 +1,56 @@
 import UIKit
 import SnapKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
-    lazy var previousButton: UIButton = {
+    private static func makeButton(title: String, target: AnyObject) -> UIButton {
         let button = UIButton()
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.cornerRadius = 4
         button.clipsToBounds = true
-        button.setTitle(" < previous month ", for: .normal)
+        button.backgroundColor = .white
+        button.setTitle(title, for: .normal)
         button.setTitleColor(.darkGray, for: .normal)
-        button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        button.addTarget(target, action: #selector(buttonPressed(_:)), for: .touchUpInside)
         return button
-    }()
+    }
 
-    lazy var nextButton: UIButton = {
-        let button = UIButton()
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.clipsToBounds = true
-        button.setTitle(" next month > ", for: .normal)
-        button.setTitleColor(.darkGray, for: .normal)
-        button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
-        return button
-    }()
+    private lazy var previousButton: UIButton = Self.makeButton(title: " < previous month  ", target: self)
+    private lazy var nextButton: UIButton = Self.makeButton(title: "  next month  > ", target: self)
 
-    lazy var calendarView: XOCalendarView = {
+    private lazy var calendarView: XOCalendarView = {
         let calendar = XOCalendarView()
         calendar.dataSource = self
         calendar.delegate = self
+        calendar.showBorderWithRandomColor()
         return calendar
     }()
 
-    let calendar = XOCalendar()
+    private lazy var calendarContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.backgroundColor = .white
+        view.showBorderWithRandomColor()
+        return view
+    }()
+
+    private let calendar = XOCalendar()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addSubview(calendarView)
+        view.backgroundColor = .lightGray
+        view.addSubview(calendarContainerView)
+        calendarContainerView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalToSuperview().inset(8)
+        }
+        calendarContainerView.addSubview(calendarView)
         calendarView.snp.makeConstraints {
-            $0.center.width.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview()
         }
         [previousButton, nextButton].forEach(view.addSubview(_:))
         previousButton.snp.makeConstraints {
@@ -48,7 +59,8 @@ class ViewController: UIViewController {
         nextButton.snp.makeConstraints {
             $0.trailing.bottom.equalToSuperview().inset(30)
         }
-        calendarView.setNeedsLayout()
+
+//        calendarView.setNeedsLayout()
 //        calendar.reloadSections()
     }
 
@@ -87,38 +99,3 @@ extension ViewController: XOCalendarViewDelegate {
 
     }
 }
-//extension ViewController: UICollectionViewDataSource {
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return calendar.numberOfMonths
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        let monthHeaderView = collectionView.dequeueReusableSupplementaryView(ofKind: Self.monthHeaderReuseID, withReuseIdentifier: Self.monthHeaderReuseID, for: indexPath) as? XOCalendarMonthHeaderView
-//        monthHeaderView?.setup(year: indexPath.section.description, month: indexPath.item.description)
-//        return monthHeaderView
-//            !? (UICollectionReusableView(), "Cannot dequeue \(Self.monthHeaderReuseID)")
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 42
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CalendarCell.self), for: indexPath) as? CalendarCell else {
-//            fatalError("Dequeue CalendarCell failed.")
-//        }
-//        cell.textLabel.text = indexPath.item.description
-//        return cell
-//    }
-//
-//}
-//
-//extension ViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return .init(width: collectionView.frame.width, height: 44)
-//    }
-//}
-//
-//extension ViewController: UICollectionViewDelegate {
-//
-//}

@@ -3,8 +3,9 @@ import UIKit
 final class XOCalendarHeaderView: UIView {
     private static func makeLabel() -> UILabel {
         let label = UILabel()
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 18)
+        label.textColor = .rgb(red: 6, green: 25, blue: 41)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.showBorderWithRandomColor()
         return label
     }
 
@@ -27,14 +28,10 @@ final class XOCalendarHeaderView: UIView {
     }
 
     private func setup() {
-        #warning("DEL")
-        backgroundColor = .lightGray
-        clipsToBounds = true
-
         [monthLabel, yearLabel].forEach(addSubview)
         monthLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().inset(32)
+            $0.leading.equalToSuperview().inset(27)
         }
         yearLabel.snp.makeConstraints {
             $0.leading.equalTo(monthLabel.snp.trailing).offset(8)

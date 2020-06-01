@@ -3,19 +3,27 @@ import SnapKit
 
 final class XOCalendarDayCell: UICollectionViewCell {
 
-    let textLabel: UILabel = {
+    private let textLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .rgb(red: 6, green: 25, blue: 41)
+        label.font = .systemFont(ofSize: 14)
         label.textAlignment = .center
+        label.showBorderWithRandomColor()
         return label
     }()
 
-    let underlineView: UIView = {
+    private let underlineView: UIView = {
         let view = UIView()
         view.backgroundColor = .red
         view.isHidden = true
         return view
     }()
+
+    var text = "" {
+        didSet {
+            textLabel.text = text
+        }
+    }
 
     var isToday = false {
         didSet {
@@ -45,7 +53,8 @@ final class XOCalendarDayCell: UICollectionViewCell {
             $0.edges.equalToSuperview()
         }
         underlineView.snp.makeConstraints {
-            $0.leading.bottom.trailing.equalToSuperview().inset(2)
+            $0.bottom.equalToSuperview().inset(2)
+            $0.leading.trailing.equalToSuperview().inset(4)
             $0.height.equalTo(2)
         }
     }

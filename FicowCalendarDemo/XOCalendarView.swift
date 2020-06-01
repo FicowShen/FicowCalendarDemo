@@ -14,15 +14,15 @@ public protocol XOCalendarViewDelegate {
 public final class XOCalendarView: UIView {
 
     enum Layout {
-        static let monthHeaderHeight: CGFloat = 44
-        static let weekdayHeaderHeight: CGFloat = 22
+        static let monthHeaderHeight: CGFloat = 52
+        static let weekdayHeaderHeight: CGFloat = 40
         static let maxNumberOfRows: CGFloat = 6
         static let numberOfColumns: CGFloat = 7
         static let dayLabelLength: CGFloat = 44
     }
 
     static let monthHeaderReuseID = String(describing: XOCalendarMonthHeaderView.self)
-    static let dayCellReuseID = String(describing: CalendarCell.self)
+    static let dayCellReuseID = String(describing: XOCalendarDayCell.self)
     static let dateFormatter = DateFormatter()
 
 
@@ -50,11 +50,11 @@ public final class XOCalendarView: UIView {
         for index in 0..<7 {
             let day = dateFormatter.weekdaySymbols[index % 7]
             let weekdayLabel = UILabel()
+            weekdayLabel.font = .systemFont(ofSize: 12, weight: .bold)
             weekdayLabel.text = day.prefix(2).uppercased()
-            weekdayLabel.textColor = .gray
+            weekdayLabel.textColor = .rgb(red: 109, green: 113, blue: 121)
             weekdayLabel.textAlignment = .center
-            weekdayLabel.layer.borderColor = UIColor.blue.cgColor
-            weekdayLabel.layer.borderWidth = 1
+            weekdayLabel.showBorderWithRandomColor()
             stack.addArrangedSubview(weekdayLabel)
         }
         return stack
@@ -67,7 +67,7 @@ public final class XOCalendarView: UIView {
         calendarLayout.minimumInteritemSpacing = 0
         calendarLayout.minimumLineSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: calendarLayout)
-        cv.register(CalendarCell.self, forCellWithReuseIdentifier: Self.dayCellReuseID)
+        cv.register(XOCalendarDayCell.self, forCellWithReuseIdentifier: Self.dayCellReuseID)
         cv.dataSource = self
         cv.delegate = self
         cv.isPagingEnabled = true
@@ -122,11 +122,12 @@ public final class XOCalendarView: UIView {
         }
         weekdayHeaderView.snp.makeConstraints {
             $0.top.equalTo(monthHeaderView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(12)
             $0.height.equalTo(Layout.weekdayHeaderHeight)
         }
         calendarView.snp.makeConstraints {
-            $0.leading.bottom.trailing.equalToSuperview()
+            $0.leading.trailing.equalTo(weekdayHeaderView)
+            $0.bottom.equalToSuperview()
             $0.top.equalTo(weekdayHeaderView.snp.bottom)
             $0.height.equalTo(Layout.dayLabelLength * Layout.maxNumberOfRows)
         }
@@ -135,10 +136,10 @@ public final class XOCalendarView: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
 
-        let height = frame.size.height - Layout.monthHeaderHeight
-        let width = frame.size.width
+//        let height = frame.size.height - Layout.monthHeaderHeight
+        let width = calendarView.frame.size.width
         calendarLayout.itemSize = CGSize(width: width / Layout.numberOfColumns,
-                                         height: height / Layout.maxNumberOfRows)
+                                         height: Layout.dayLabelLength)
     }
 
 }
@@ -207,7 +208,7 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.dayCellReuseID, for: indexPath) as! CalendarCell
+        let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.dayCellReuseID, for: indexPath) as! XOCalendarDayCell
 
         let currentMonthInfo : [Int] = monthInfo[indexPath.section]! // we are guaranteed an array by the fact that we reached this line (so unwrap)
 
@@ -219,11 +220,11 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
 
         if indexPath.item >= firstDayIndex &&
             indexPath.item < firstDayIndex + numberOfDaysInCurrentMonth {
-            dayCell.textLabel.text = String(fromStartOfMonthIndexPath.item + 1)
+            dayCell.text = String(fromStartOfMonthIndexPath.item + 1)
             dayCell.isHidden = false
 
         } else {
-            dayCell.textLabel.text = ""
+            dayCell.text = ""
             dayCell.isHidden = true
         }
 
