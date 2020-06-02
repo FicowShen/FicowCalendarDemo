@@ -71,7 +71,7 @@ final class ViewController: UIViewController {
         case nextButton:
             print("nextButton")
         default:
-            fatalError()
+            fatalError("Invalid button pressed")
         }
     }
 }
@@ -97,5 +97,8 @@ extension ViewController: XOCalendarViewDelegate {
 
     func calendar(_ calendar: XOCalendarView, didSelectDate date: Date) {
 
+    }
+    func calendar(_ calendar: XOCalendarView, didDeselectDate date: Date) {
+        
     }
 }

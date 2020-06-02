@@ -9,12 +9,13 @@ public protocol XOCalendarViewDelegate {
     func calendar(_ calendar: XOCalendarView, canSelectDate date: Date) -> Bool
     func calendar(_ calendar: XOCalendarView, didScrollToMonth date: Date)
     func calendar(_ calendar: XOCalendarView, didSelectDate date: Date)
+    func calendar(_ calendar: XOCalendarView, didDeselectDate date: Date)
 }
 
 public final class XOCalendarView: UIView {
 
     enum Layout {
-        static let monthHeaderHeight: CGFloat = 52
+        static let monthHeaderHeight: CGFloat = XOCalendarHeaderView.recommendedHeight
         static let weekdayHeaderHeight: CGFloat = 40
         static let maxNumberOfRows: CGFloat = 6
         static let numberOfColumns: CGFloat = 7
@@ -31,6 +32,7 @@ public final class XOCalendarView: UIView {
 
     var dataSource: XOCalendarViewDataSource?
     var delegate: XOCalendarViewDelegate?
+    private var dateBeingSelectedByUser : Date?
 
     private var startDateCache: Date = Date()
     private var endDateCache: Date = Date()
@@ -60,14 +62,18 @@ public final class XOCalendarView: UIView {
         return stack
     }()
 
-    private let calendarLayout: XOCalendarFlowLayout = XOCalendarFlowLayout()
+    private let calendarLayout: XOCalendarFlowLayout = {
+        let layout = XOCalendarFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        return layout
+    }()
 
-    private lazy var calendarView : UICollectionView = {
-        calendarLayout.scrollDirection = .horizontal
-        calendarLayout.minimumInteritemSpacing = 0
-        calendarLayout.minimumLineSpacing = 0
+    private lazy var calendarCollectionView : UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: calendarLayout)
         cv.register(XOCalendarDayCell.self, forCellWithReuseIdentifier: Self.dayCellReuseID)
+        cv.register(XOCalendarMonthHeaderView.self, forSupplementaryViewOfKind: Self.monthHeaderReuseID, withReuseIdentifier: Self.monthHeaderReuseID)
         cv.dataSource = self
         cv.delegate = self
         cv.isPagingEnabled = true
@@ -86,22 +92,6 @@ public final class XOCalendarView: UIView {
 
     private var monthInfo: [Int: [Int]] = [Int: [Int]]()
 
-//    public override var frame: CGRect {
-//        didSet {
-//            let height = frame.size.height - Layout.monthHeaderHeight
-//            let width = frame.size.width
-//            monthHeaderView.frame = CGRect(x: 0.0,
-//                                      y: 0.0,
-//                                      width: frame.size.width,
-//                                      height: Layout.monthHeaderHeight)
-//            calendarView.frame = CGRect(x: 0.0,
-//                                        y: Layout.monthHeaderHeight,
-//                                        width: width ,
-//                                        height: height)
-//            calendarLayout.itemSize = CGSize(width: width / Layout.numberOfColumns,
-//                                             height: height / Layout.maxNumberOfRows)
-//        }
-//    }
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -115,7 +105,7 @@ public final class XOCalendarView: UIView {
 
     private func setup() {
         monthHeaderView.setup(year: "Year", month: "Month")
-        [monthHeaderView, weekdayHeaderView, calendarView].forEach(addSubview)
+        [monthHeaderView, weekdayHeaderView, calendarCollectionView].forEach(addSubview)
         monthHeaderView.snp.makeConstraints {
             $0.leading.top.trailing.equalToSuperview()
             $0.height.equalTo(Layout.monthHeaderHeight)
@@ -125,7 +115,7 @@ public final class XOCalendarView: UIView {
             $0.leading.trailing.equalToSuperview().inset(12)
             $0.height.equalTo(Layout.weekdayHeaderHeight)
         }
-        calendarView.snp.makeConstraints {
+        calendarCollectionView.snp.makeConstraints {
             $0.leading.trailing.equalTo(weekdayHeaderView)
             $0.bottom.equalToSuperview()
             $0.top.equalTo(weekdayHeaderView.snp.bottom)
@@ -137,7 +127,9 @@ public final class XOCalendarView: UIView {
         super.layoutSubviews()
 
 //        let height = frame.size.height - Layout.monthHeaderHeight
-        let width = calendarView.frame.size.width
+        let width = calendarCollectionView.frame.size.width
+//        calendarLayout.headerReferenceSize = CGSize(width: width,
+//                                                    height: XOCalendarHeaderView.recommendedHeight)
         calendarLayout.itemSize = CGSize(width: width / Layout.numberOfColumns,
                                          height: Layout.dayLabelLength)
     }
@@ -173,7 +165,7 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
                                                                      options: [])
             guard let day = differenceFromTodayComponents.day,
                 let month = differenceFromTodayComponents.month
-                else { fatalError() }
+                else { fatalError("Get day and month from differenceFromTodayComponents failed.") }
             todayIndexPath = IndexPath(item: day, section: month)
         }
 
@@ -182,7 +174,7 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
                                                         to: endDateCache,
                                                         options: [])
         guard let month = differenceComponents.month
-            else { fatalError() }
+            else { fatalError("Get total month count failed.") }
         return month + 1
     }
 
@@ -249,6 +241,57 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
 
         return dayCell
     }
+
+//    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: collectionView.frame.width,
+//                      height: XOCalendarHeaderView.recommendedHeight)
+//    }
+
+//    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: Self.monthHeaderReuseID, withReuseIdentifier: Self.monthHeaderReuseID, for: indexPath) as? XOCalendarMonthHeaderView
+//            else { fatalError("Dequeue \(XOCalendarMonthHeaderView.self) failed.") }
+//        return headerView
+//    }
+}
+
+extension XOCalendarView: UICollectionViewDelegate {
+    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let currentMonthInfo : [Int] = monthInfo[indexPath.section]!
+        let firstDayInMonth = currentMonthInfo[FIRST_DAY_INDEX]
+
+        var offsetComponents = DateComponents()
+        offsetComponents.month = indexPath.section
+        offsetComponents.day = indexPath.item - firstDayInMonth
+
+        if let dateUserSelected = gregorian.date(byAdding: offsetComponents, to: startOfMonthCache, options: []) {
+            dateBeingSelectedByUser = dateUserSelected
+            // Optional protocol method (the delegate can "object")
+            if let canSelectFromDelegate = delegate?.calendar(self, canSelectDate: dateUserSelected) {
+                return canSelectFromDelegate
+            }
+            return true // it can select any date by default
+        }
+        return false // if date is out of scope
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let delegate = self.delegate,
+            let index = selectedIndexPaths.firstIndex(of: indexPath),
+            let dateSelectedByUser = dateBeingSelectedByUser {
+            delegate.calendar(self, didDeselectDate: dateSelectedByUser)
+            selectedIndexPaths.remove(at: index)
+            selectedDates.remove(at: index)
+        }
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let delegate = self.delegate,
+            let dateSelectedByUser = dateBeingSelectedByUser {
+            delegate.calendar(self, didSelectDate: dateSelectedByUser)
+            selectedIndexPaths.append(indexPath)
+            selectedDates.append(dateSelectedByUser)
+        }
+    }
 }
 
 extension XOCalendarView: UIScrollViewDelegate {
@@ -263,9 +306,9 @@ extension XOCalendarView: UIScrollViewDelegate {
 
     func calculateDateBasedOnScrollViewPosition(scrollView: UIScrollView) {
 
-        let cvbounds = calendarView.bounds
+        let cvbounds = calendarCollectionView.bounds
 
-        var page : Int = Int(floor(calendarView.contentOffset.x / cvbounds.size.width))
+        var page : Int = Int(floor(calendarCollectionView.contentOffset.x / cvbounds.size.width))
 
         page = page > 0 ? page : 0
 

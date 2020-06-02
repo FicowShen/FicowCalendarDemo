@@ -1,6 +1,9 @@
 import UIKit
 
 final class XOCalendarHeaderView: UIView {
+
+    static let recommendedHeight: CGFloat = 52
+
     private static func makeLabel() -> UILabel {
         let label = UILabel()
         label.textColor = .rgb(red: 6, green: 25, blue: 41)

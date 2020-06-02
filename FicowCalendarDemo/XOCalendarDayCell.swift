@@ -12,6 +12,15 @@ final class XOCalendarDayCell: UICollectionViewCell {
         return label
     }()
 
+    private let selectView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.lightGray.withAlphaComponent(0.6)
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
+        view.isHidden = true
+        return view
+    }()
+
     private let underlineView: UIView = {
         let view = UIView()
         view.backgroundColor = .red
@@ -31,6 +40,12 @@ final class XOCalendarDayCell: UICollectionViewCell {
         }
     }
 
+    override var isSelected : Bool {
+        didSet {
+            selectView.isHidden = !isSelected
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -45,10 +60,11 @@ final class XOCalendarDayCell: UICollectionViewCell {
         super.prepareForReuse()
         textLabel.text = ""
         underlineView.isHidden = true
+        selectView.isHidden = true
     }
 
     private func setup() {
-        [textLabel, underlineView].forEach(contentView.addSubview(_:))
+        [selectView, textLabel, underlineView].forEach(contentView.addSubview(_:))
         textLabel.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -56,6 +72,9 @@ final class XOCalendarDayCell: UICollectionViewCell {
             $0.bottom.equalToSuperview().inset(2)
             $0.leading.trailing.equalToSuperview().inset(4)
             $0.height.equalTo(2)
+        }
+        selectView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(2)
         }
     }
 }
