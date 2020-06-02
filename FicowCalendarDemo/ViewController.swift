@@ -16,6 +16,16 @@ final class ViewController: UIViewController {
         return button
     }
 
+    private static let dateFormatter = DateFormatter()
+
+    private static func yyyyMMddDateFromString(_ s: String) -> Date? {
+        Self.dateFormatter.dateFormat = "yyyy-MM-dd"
+        return Self.dateFormatter.date(from: s)
+    }
+
+    var minimumDate = yyyyMMddDateFromString("2019-02-03") ?? Date()
+    var maximumDate = yyyyMMddDateFromString("2021-04-10") ?? Date()
+
     private lazy var previousButton: UIButton = Self.makeButton(title: " < previous month  ", target: self)
     private lazy var nextButton: UIButton = Self.makeButton(title: "  next month  > ", target: self)
 
@@ -59,7 +69,7 @@ final class ViewController: UIViewController {
         nextButton.snp.makeConstraints {
             $0.trailing.bottom.equalToSuperview().inset(30)
         }
-
+        calendarView.reloadSections()
 //        calendarView.setNeedsLayout()
 //        calendar.reloadSections()
     }
@@ -76,14 +86,10 @@ final class ViewController: UIViewController {
     }
 }
 
-extension ViewController: XOCalendarViewDataSource {
-    func startDate() -> Date? {
-        calendar.minimumDate
-    }
+extension ViewController: XOCalendarDataSource {
+    func startDate() -> Date? { minimumDate }
 
-    func endDate() -> Date? {
-        calendar.maximumDate
-    }
+    func endDate() -> Date? { maximumDate }
 }
 
 extension ViewController: XOCalendarViewDelegate {

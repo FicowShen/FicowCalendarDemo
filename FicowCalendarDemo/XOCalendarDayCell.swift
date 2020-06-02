@@ -3,9 +3,14 @@ import SnapKit
 
 final class XOCalendarDayCell: UICollectionViewCell {
 
+    private static let normalTextColor: UIColor = .rgb(red: 6, green: 25, blue: 41)
+    private static let selectedTextColor: UIColor = .white
+
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .rgb(red: 6, green: 25, blue: 41)
+        label.layer.masksToBounds = true
+        label.layer.borderColor = normalTextColor.cgColor
+        label.textColor = normalTextColor
         label.font = .systemFont(ofSize: 14)
         label.textAlignment = .center
         label.showBorderWithRandomColor()
@@ -21,7 +26,7 @@ final class XOCalendarDayCell: UICollectionViewCell {
         return view
     }()
 
-    private let underlineView: UIView = {
+    private let todayView: UIView = {
         let view = UIView()
         view.backgroundColor = .red
         view.isHidden = true
@@ -36,7 +41,7 @@ final class XOCalendarDayCell: UICollectionViewCell {
 
     var isToday = false {
         didSet {
-            underlineView.isHidden = !isToday
+            textLabel.layer.borderWidth = isToday ? 1 : 0
         }
     }
 
@@ -51,6 +56,8 @@ final class XOCalendarDayCell: UICollectionViewCell {
     override var isSelected : Bool {
         didSet {
             selectView.isHidden = !isSelected
+            textLabel.textColor = isSelected ? Self.selectedTextColor : Self.normalTextColor
+            textLabel.layer.borderColor = textLabel.textColor.cgColor
         }
     }
 
@@ -67,23 +74,29 @@ final class XOCalendarDayCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         textLabel.text = ""
-        underlineView.isHidden = true
+        todayView.isHidden = true
         selectView.isHidden = true
         isDayInCurrentSection = false
     }
 
     private func setup() {
-        [selectView, textLabel, underlineView].forEach(contentView.addSubview(_:))
+        [selectView, textLabel, todayView].forEach(contentView.addSubview(_:))
         textLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalToSuperview().inset(6)
         }
-        underlineView.snp.makeConstraints {
+        todayView.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(2)
-            $0.leading.trailing.equalToSuperview().inset(4)
+            $0.leading.trailing.equalToSuperview().inset(6)
             $0.height.equalTo(2)
         }
         selectView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(2)
         }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        textLabel.layoutIfNeeded()
+        textLabel.layer.cornerRadius = textLabel.bounds.height / 2
     }
 }
