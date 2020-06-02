@@ -2,7 +2,8 @@ import UIKit
 
 final class XOCalendarHeaderView: UIView {
 
-    static let recommendedHeight: CGFloat = 52
+    static let fixedHeaderHeight: CGFloat = 52
+    static let scrollableHeaderHeight: CGFloat = fixedHeaderHeight/2
 
     private static func makeLabel() -> UILabel {
         let label = UILabel()
@@ -34,12 +35,11 @@ final class XOCalendarHeaderView: UIView {
         [monthLabel, yearLabel].forEach(addSubview)
         monthLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().inset(27)
+            $0.leading.equalToSuperview()
         }
         yearLabel.snp.makeConstraints {
             $0.leading.equalTo(monthLabel.snp.trailing).offset(8)
             $0.top.bottom.equalToSuperview()
-            $0.trailing.lessThanOrEqualToSuperview().inset(32)
         }
     }
 }

@@ -23,14 +23,28 @@ final class XOCalendarFlowLayout: UICollectionViewFlowLayout {
         if attributes.representedElementKind != nil {
             return
         }
-        if let collectionView = collectionView {
+        guard let collectionView = collectionView else {
+            return
+        }
+        switch scrollDirection {
+        case .horizontal:
             let xPageOffset = CGFloat(attributes.indexPath.section) * collectionView.frame.size.width
             let xCellOffset: CGFloat = xPageOffset + (CGFloat(attributes.indexPath.item % 7) * itemSize.width)
-            let yCellOffset: CGFloat = headerReferenceSize.height + (CGFloat(attributes.indexPath.item / 7) * itemSize.height)
+            let yCellOffset: CGFloat = CGFloat(attributes.indexPath.item / 7) * itemSize.height // headerReferenceSize.height + (CGFloat(attributes.indexPath.item / 7) * itemSize.height)
             attributes.frame = CGRect(x: xCellOffset,
                                       y: yCellOffset,
                                       width: itemSize.width,
                                       height: itemSize.height)
+        case .vertical:
+            let yPageOffset = CGFloat(attributes.indexPath.section) * collectionView.frame.size.height
+            let yCellOffset: CGFloat = yPageOffset + headerReferenceSize.height + (CGFloat(attributes.indexPath.item / 7) * itemSize.height)
+            let xCellOffset: CGFloat = CGFloat(attributes.indexPath.item % 7) * itemSize.width
+            attributes.frame = CGRect(x: xCellOffset,
+                                      y: yCellOffset,
+                                      width: itemSize.width,
+                                      height: itemSize.height)
+        @unknown default:
+            fatalError("Unknown scrollDirection")
         }
     }
 }

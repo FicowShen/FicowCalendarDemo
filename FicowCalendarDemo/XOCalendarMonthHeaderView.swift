@@ -4,6 +4,7 @@ import SnapKit
 final class XOCalendarMonthHeaderView: UICollectionReusableView {
 
     private let headerView = XOCalendarHeaderView()
+    private let horizontalInset = XOCalendarView.Layout.weekdayHeaderHorizontalInset
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,13 +21,11 @@ final class XOCalendarMonthHeaderView: UICollectionReusableView {
     }
 
     private func setup() {
-        #warning("DEL")
-        backgroundColor = .lightGray
-        clipsToBounds = true
-
+        showBorderWithRandomColor()
         addSubview(headerView)
         headerView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(horizontalInset)
         }
     }
 }
