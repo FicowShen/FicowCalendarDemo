@@ -13,6 +13,13 @@ final class XOCalendarHeaderView: UIView {
         return label
     }
 
+    var didSetText: Bool {
+        guard let year = yearLabel.text, !year.isEmpty,
+            let month = monthLabel.text, !month.isEmpty
+            else { return false }
+        return true
+    }
+
     private let yearLabel = makeLabel()
     private let monthLabel = makeLabel()
 

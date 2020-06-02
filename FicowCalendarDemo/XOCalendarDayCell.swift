@@ -14,7 +14,7 @@ final class XOCalendarDayCell: UICollectionViewCell {
 
     private let selectView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.lightGray.withAlphaComponent(0.6)
+        view.backgroundColor = .rgb(red: 81, green: 138, blue: 215)
         view.layer.cornerRadius = 8
         view.layer.masksToBounds = true
         view.isHidden = true
@@ -40,6 +40,14 @@ final class XOCalendarDayCell: UICollectionViewCell {
         }
     }
 
+    var isDayInCurrentSection = false {
+        didSet {
+            isHidden = !isDayInCurrentSection
+//            alpha = isDayInCurrentSection ? 1 : 0.2
+//            isUserInteractionEnabled = isDayInCurrentSection
+        }
+    }
+
     override var isSelected : Bool {
         didSet {
             selectView.isHidden = !isSelected
@@ -61,6 +69,7 @@ final class XOCalendarDayCell: UICollectionViewCell {
         textLabel.text = ""
         underlineView.isHidden = true
         selectView.isHidden = true
+        isDayInCurrentSection = false
     }
 
     private func setup() {

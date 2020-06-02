@@ -1,6 +1,9 @@
 import UIKit
 
 final class XOCalendarFlowLayout: UICollectionViewFlowLayout {
+
+    var showMonthHeader = true
+
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
 
         return super.layoutAttributesForElements(in: rect)?.map {
@@ -37,7 +40,8 @@ final class XOCalendarFlowLayout: UICollectionViewFlowLayout {
                                       height: itemSize.height)
         case .vertical:
             let yPageOffset = CGFloat(attributes.indexPath.section) * collectionView.frame.size.height
-            let yCellOffset: CGFloat = yPageOffset + headerReferenceSize.height + (CGFloat(attributes.indexPath.item / 7) * itemSize.height)
+            var yCellOffset: CGFloat = yPageOffset + (CGFloat(attributes.indexPath.item / 7) * itemSize.height)
+            yCellOffset += showMonthHeader ? headerReferenceSize.height : 0
             let xCellOffset: CGFloat = CGFloat(attributes.indexPath.item % 7) * itemSize.width
             attributes.frame = CGRect(x: xCellOffset,
                                       y: yCellOffset,
