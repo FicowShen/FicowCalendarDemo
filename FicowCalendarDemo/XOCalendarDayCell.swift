@@ -13,7 +13,6 @@ final class XOCalendarDayCell: UICollectionViewCell {
         label.textColor = normalTextColor
         label.font = .systemFont(ofSize: 14)
         label.textAlignment = .center
-        label.showBorderWithRandomColor()
         return label
     }()
 
@@ -80,6 +79,7 @@ final class XOCalendarDayCell: UICollectionViewCell {
     }
 
     private func setup() {
+        showBorderWithRandomColor()
         [selectView, textLabel, todayView].forEach(contentView.addSubview(_:))
         textLabel.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(6)
