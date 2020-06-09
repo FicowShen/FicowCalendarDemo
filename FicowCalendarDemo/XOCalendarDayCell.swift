@@ -47,8 +47,6 @@ final class XOCalendarDayCell: UICollectionViewCell {
     var isDayInCurrentSection = false {
         didSet {
             isHidden = !isDayInCurrentSection
-//            alpha = isDayInCurrentSection ? 1 : 0.2
-//            isUserInteractionEnabled = isDayInCurrentSection
         }
     }
 

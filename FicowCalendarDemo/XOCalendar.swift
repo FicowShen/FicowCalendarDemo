@@ -76,7 +76,8 @@ public final class XOCalendar {
     /// - Parameter section: section, it's month if counting for a month
     /// - Returns: number of items, it's number of days if counting for a month
     public func numberOfItemsInSection(_ section: Int) -> Int {
-        return getSection(section).numberOfItems
+        let sectionInfo = getSection(section)
+        return sectionInfo.numberOfItems + sectionInfo.indexOfFirstItem
     }
 
     public func reloadSections() {

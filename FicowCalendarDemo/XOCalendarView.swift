@@ -154,6 +154,7 @@ public final class XOCalendarView: UIView {
 
     private func setup() {
 //        firstWeekday = .saturday
+        calendarHeaderView.backgroundColor = .white
         [calendarHeaderView, dayHeaderView, calendarCollectionView].reversed().forEach(addSubview)
         calendarHeaderView.snp.makeConstraints {
             $0.top.equalToSuperview()
@@ -169,12 +170,12 @@ public final class XOCalendarView: UIView {
             $0.leading.trailing.equalTo(dayHeaderView)
             $0.bottom.equalToSuperview()
             let topOffset = showMonthHeaderForVerticalLayout
-                ? -XOCalendarHeaderView.scrollableHeaderHeight
+                ? -XOCalendarMonthHeaderView.height
                 : 0
             $0.top.equalTo(dayHeaderView.snp.bottom).offset(topOffset)
             var height = Layout.dayLabelLength * Layout.maxNumberOfRows
             if showMonthHeaderForVerticalLayout {
-                height += XOCalendarHeaderView.scrollableHeaderHeight
+                height += XOCalendarMonthHeaderView.height
             }
             $0.height.equalTo(height)
         }
@@ -185,7 +186,7 @@ public final class XOCalendarView: UIView {
         let size: CGSize
         if showMonthHeaderForVerticalLayout {
             size = CGSize(width: width,
-                          height: XOCalendarHeaderView.scrollableHeaderHeight)
+                          height: XOCalendarMonthHeaderView.height)
         } else {
             size = .zero
         }
@@ -208,27 +209,24 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
     }
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        #warning("*** Compute the correct column and row number ***")
-        _ = calendar.numberOfItemsInSection(section)
-        return Int(Layout.numberOfColumns * Layout.maxNumberOfRows) // 7 x 6 = 42
+        return calendar.numberOfItemsInSection(section)
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.dayCellReuseID, for: indexPath) as? XOCalendarDayCell,
-            let section = calendar.sections[indexPath.section]
+        guard let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.dayCellReuseID, for: indexPath) as? XOCalendarDayCell
             else { fatalError("Dequeue \(XOCalendarDayCell.self) failed.") }
 
+        let section = calendar.getSection(indexPath.section)
         let indexOfFirstItem = section.indexOfFirstItem
         let numberOfItems = section.numberOfItems
 
         let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - indexOfFirstItem,
-                                                  section: indexPath.section) // if the first is wednesday, add 2
+                                                  section: indexPath.section)
 
         if indexPath.item >= indexOfFirstItem &&
             indexPath.item < indexOfFirstItem + numberOfItems {
             dayCell.text = String(fromStartOfMonthIndexPath.item + 1)
             dayCell.isDayInCurrentSection = true
-
         } else {
             dayCell.isDayInCurrentSection = false
         }
