@@ -4,14 +4,11 @@ import SnapKit
 final class ViewController: UIViewController {
 
     private static func makeButton(title: String, target: AnyObject) -> UIButton {
-        let button = UIButton()
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.lightGray.cgColor
+        let button = UIButton(type: .system)
         button.layer.cornerRadius = 4
         button.clipsToBounds = true
         button.backgroundColor = .white
         button.setTitle(title, for: .normal)
-        button.setTitleColor(.darkGray, for: .normal)
         button.addTarget(target, action: #selector(buttonPressed(_:)), for: .touchUpInside)
         return button
     }
@@ -51,7 +48,7 @@ final class ViewController: UIViewController {
         return stack
     }()
 
-    private lazy var todayButton: UIButton = Self.makeButton(title: " today ", target: self)
+    private lazy var todayButton: UIButton = Self.makeButton(title: " - today - ", target: self)
     private lazy var previousButton: UIButton = Self.makeButton(title: " < previous month  ", target: self)
     private lazy var nextButton: UIButton = Self.makeButton(title: "  next month  > ", target: self)
 
