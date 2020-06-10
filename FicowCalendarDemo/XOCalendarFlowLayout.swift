@@ -75,7 +75,7 @@ final class XOCalendarVerticalFlowLayout: XOCalendarFlowLayout {
     }
 
     private var sectionVerticalStart = [Int: CGFloat]()
-    private let numberOfRows = (min: 5, max: 6)
+    private let numberOfRows = (min: 4, mid: 5, max: 6)
 
     override func setup() {
         super.setup()
@@ -163,11 +163,17 @@ final class XOCalendarVerticalFlowLayout: XOCalendarFlowLayout {
             verticalStart = sectionVerticalStart[caculatedSection] ?? 0
         }
         let minItemCountOfMonth = numberOfRows.min * numberOfDaysInAWeek
-        while caculatedSection < section - 1 {
+        let midItemCountOfMonth = numberOfRows.mid * numberOfDaysInAWeek
+        while caculatedSection < section {
             let items = dataSource.numberOfItemsInSection(caculatedSection)
-            let numberOfRowsInSection = items > minItemCountOfMonth
-                ? numberOfRows.max
-                : numberOfRows.min
+            let numberOfRowsInSection: Int
+            if items > midItemCountOfMonth {
+                numberOfRowsInSection = numberOfRows.max
+            } else if items > minItemCountOfMonth {
+                numberOfRowsInSection = numberOfRows.mid
+            } else {
+                numberOfRowsInSection = numberOfRows.min
+            }
             verticalStart += CGFloat(numberOfRowsInSection) * itemSize.height + headerReferenceSize.height
             caculatedSection += 1
             sectionVerticalStart[caculatedSection] = verticalStart

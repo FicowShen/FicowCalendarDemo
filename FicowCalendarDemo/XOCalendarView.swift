@@ -145,11 +145,16 @@ public final class XOCalendarView: UIView {
         guard let date = calendar.dateOfFirstDayInSection(section),
             let indexPath = try calendar.indexPathOfDate(date)
             else { return }
-        let y = calendarCollectionView.bounds.height * CGFloat(indexPath.section)
-        let rect = CGRect(x: 0, y: y,
-                          width: calendarCollectionView.bounds.width,
-                          height: calendarCollectionView.bounds.height)
-        calendarCollectionView.scrollRectToVisible(rect, animated: animated)
+        guard let attr = calendarLayout.layoutAttributesForItem(at: indexPath)
+            else {
+                return
+        }
+
+//        let y = calendarCollectionView.bounds.height * CGFloat(indexPath.section)
+//        let rect = CGRect(x: 0, y: y,
+//                          width: calendarCollectionView.bounds.width,
+//                          height: calendarCollectionView.bounds.height)
+        calendarCollectionView.scrollRectToVisible(attr.frame, animated: animated)
     }
 
     private func setup() {
@@ -172,7 +177,7 @@ public final class XOCalendarView: UIView {
             let topOffset = showMonthHeaderForVerticalLayout
                 ? -XOCalendarMonthHeaderView.height
                 : 0
-            $0.top.equalTo(dayHeaderView.snp.bottom).offset(topOffset)
+            $0.top.equalTo(dayHeaderView.snp.bottom).offset(0)
             var height = Layout.dayLabelLength * Layout.maxNumberOfRows
             if showMonthHeaderForVerticalLayout {
                 height += XOCalendarMonthHeaderView.height
@@ -332,28 +337,44 @@ extension XOCalendarView: UIScrollViewDelegate {
     }
 
     func calculateDateBasedOnScrollViewPosition(scrollView: UIScrollView) {
-        let cvbounds = calendarCollectionView.bounds
-        var page: Int = 0
-        switch calendarLayout.scrollDirection {
-        case .horizontal:
-            let pageOfOffset: Int = Int(floor(calendarCollectionView.contentOffset.x / cvbounds.size.width))
-            page = pageOfOffset > 0 ? pageOfOffset : 0
-        case .vertical:
-            let pageOfOffset: Int = Int(floor(calendarCollectionView.contentOffset.y / cvbounds.size.height))
-            page = pageOfOffset > 0 ? pageOfOffset : 0
-        @unknown default:
-            fatalError("Unknown scrollDirection")
-        }
+        if let indexPath = calendarCollectionView.indexPathsForVisibleItems.min() {
+//            let section = calendar.getSection(indexPath.section)
+//            print("indexPath:", indexPath)
+//            print(section)
+            displayingSection = indexPath.section
+            guard let yearDate = calendar.dateOfFirstDayInSection(indexPath.section),
+                let (year, month) = calendar.yearAndMonthOfDate(yearDate)
+                else {
+                    return
+            }
+            print(year, month)
 
-        displayingSection = page
-        guard let yearDate = calendar.dateOfFirstDayInSection(page),
-            let (year, month) = calendar.yearAndMonthOfDate(yearDate)
-            else {
-                return
+            calendarHeaderView.setup(year: year, month: month)
+            displayingDate = yearDate
+            delegate?.calendar(self, didScrollToMonth: yearDate)
         }
-
-        calendarHeaderView.setup(year: year, month: month)
-        displayingDate = yearDate
-        delegate?.calendar(self, didScrollToMonth: yearDate)
+//        let cvbounds = calendarCollectionView.bounds
+//        var page: Int = 0
+//        switch calendarLayout.scrollDirection {
+//        case .horizontal:
+//            let pageOfOffset: Int = Int(floor(calendarCollectionView.contentOffset.x / cvbounds.size.width))
+//            page = pageOfOffset > 0 ? pageOfOffset : 0
+//        case .vertical:
+//            let pageOfOffset: Int = Int(floor(calendarCollectionView.contentOffset.y / cvbounds.size.height))
+//            page = pageOfOffset > 0 ? pageOfOffset : 0
+//        @unknown default:
+//            fatalError("Unknown scrollDirection")
+//        }
+//
+//        displayingSection = page
+//        guard let yearDate = calendar.dateOfFirstDayInSection(page),
+//            let (year, month) = calendar.yearAndMonthOfDate(yearDate)
+//            else {
+//                return
+//        }
+//
+//        calendarHeaderView.setup(year: year, month: month)
+//        displayingDate = yearDate
+//        delegate?.calendar(self, didScrollToMonth: yearDate)
     }
 }

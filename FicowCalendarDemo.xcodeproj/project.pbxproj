@@ -15,6 +15,7 @@
 		896C27A12484C00A00EB0BA4 /* XOCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896C27A02484C00A00EB0BA4 /* XOCalendarView.swift */; };
 		896C27A32484E3E400EB0BA4 /* XOCalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896C27A22484E3E400EB0BA4 /* XOCalendarHeaderView.swift */; };
 		896C27A52484E42500EB0BA4 /* XOCalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896C27A42484E42500EB0BA4 /* XOCalendarFlowLayout.swift */; };
+		8985994B2490E570004D4C31 /* XOCalendarFlowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8985994A2490E570004D4C31 /* XOCalendarFlowLayoutTests.swift */; };
 		89AB057A24875BA400F8BD56 /* XOCalendarDayHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AB057924875BA400F8BD56 /* XOCalendarDayHeaderView.swift */; };
 		89BDDF7F247BB72C007D3F20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BDDF7E247BB72C007D3F20 /* AppDelegate.swift */; };
 		89BDDF81247BB72C007D3F20 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BDDF80247BB72C007D3F20 /* SceneDelegate.swift */; };
@@ -57,6 +58,7 @@
 		896C27A02484C00A00EB0BA4 /* XOCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarView.swift; sourceTree = "<group>"; };
 		896C27A22484E3E400EB0BA4 /* XOCalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarHeaderView.swift; sourceTree = "<group>"; };
 		896C27A42484E42500EB0BA4 /* XOCalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarFlowLayout.swift; sourceTree = "<group>"; };
+		8985994A2490E570004D4C31 /* XOCalendarFlowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarFlowLayoutTests.swift; sourceTree = "<group>"; };
 		89AB057924875BA400F8BD56 /* XOCalendarDayHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOCalendarDayHeaderView.swift; sourceTree = "<group>"; };
 		89BDDF7B247BB72C007D3F20 /* FicowCalendarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FicowCalendarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89BDDF7E247BB72C007D3F20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				89BDDF95247BB72F007D3F20 /* FicowCalendarDemoTests.swift */,
 				89BDDF97247BB72F007D3F20 /* Info.plist */,
 				890F4887248F9A050085AA71 /* XOCalendarTests.swift */,
+				8985994A2490E570004D4C31 /* XOCalendarFlowLayoutTests.swift */,
 			);
 			path = FicowCalendarDemoTests;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 			files = (
 				890F4888248F9A050085AA71 /* XOCalendarTests.swift in Sources */,
 				89BDDF96247BB72F007D3F20 /* FicowCalendarDemoTests.swift in Sources */,
+				8985994B2490E570004D4C31 /* XOCalendarFlowLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
