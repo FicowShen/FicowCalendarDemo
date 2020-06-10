@@ -1,7 +1,7 @@
 import UIKit
 
 protocol XOCalendarLayoutDataSource: class {
-    func getSection(_ sectionIndex: Int) -> XOCalendar.CalendarSection
+    func numberOfItemsInSection(_ section: Int) -> Int
 }
 
 extension XOCalendar: XOCalendarLayoutDataSource {}
@@ -164,8 +164,7 @@ final class XOCalendarVerticalFlowLayout: XOCalendarFlowLayout {
         }
         let minItemCountOfMonth = numberOfRows.min * numberOfDaysInAWeek
         while caculatedSection < section - 1 {
-            let calendarSection = dataSource.getSection(caculatedSection)
-            let items = calendarSection.numberOfItems + calendarSection.indexOfFirstItem
+            let items = dataSource.numberOfItemsInSection(caculatedSection)
             let numberOfRowsInSection = items > minItemCountOfMonth
                 ? numberOfRows.max
                 : numberOfRows.min

@@ -23,8 +23,8 @@ final class ViewController: UIViewController {
         return Self.dateFormatter.date(from: s)
     }
 
-    var minimumDate = yyyyMMddDateFromString("2019-12-03") ?? Date()
-    var maximumDate = yyyyMMddDateFromString("2021-04-10") ?? Date()
+    var minimumDate = yyyyMMddDateFromString("2001-12-03") ?? Date()
+    var maximumDate = yyyyMMddDateFromString("2041-04-10") ?? Date()
 
     private lazy var calendarView: XOCalendarView = {
         let calendar = XOCalendarView()

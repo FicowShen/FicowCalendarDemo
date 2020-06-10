@@ -74,7 +74,7 @@ public final class XOCalendar {
 
     /// Generate the number of items in a section and cache in `sections`
     /// - Parameter section: section, it's month if counting for a month
-    /// - Returns: number of items, it's number of days if counting for a month
+    /// - Returns: number of items
     public func numberOfItemsInSection(_ section: Int) -> Int {
         let sectionInfo = getSection(section)
         return sectionInfo.numberOfItems + sectionInfo.indexOfFirstItem
