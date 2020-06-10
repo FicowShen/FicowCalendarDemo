@@ -96,6 +96,18 @@ public final class XOCalendarView: UIView {
         return offsettedIndexPathForCalendarIndexPath(todayIndexPath)
     }
 
+    var headerReferenceSize: CGSize {
+        let width = calendarCollectionView.frame.size.width
+        let size: CGSize
+        if showMonthHeaderForVerticalLayout {
+            size = CGSize(width: width,
+                          height: XOCalendarMonthHeaderView.height)
+        } else {
+            size = .zero
+        }
+        return size
+    }
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -133,7 +145,6 @@ public final class XOCalendarView: UIView {
         guard let indexPath = try calendar.indexPathOfDate(date)
             else { return }
         try scrollToSection(indexPath.section, animated: animated)
-//        let offsettedIndexPath = offsettedIndexPathForCalendarIn
     }
 
     public func reloadSections() {
@@ -143,18 +154,13 @@ public final class XOCalendarView: UIView {
 
     private func scrollToSection(_ section: Int, animated: Bool = true) throws {
         guard let date = calendar.dateOfFirstDayInSection(section),
-            let indexPath = try calendar.indexPathOfDate(date)
+            let indexPath = try calendar.indexPathOfDate(date),
+            let attr = calendarLayout.layoutAttributesForItem(at: indexPath)
             else { return }
-        guard let attr = calendarLayout.layoutAttributesForItem(at: indexPath)
-            else {
-                return
-        }
-
-//        let y = calendarCollectionView.bounds.height * CGFloat(indexPath.section)
-//        let rect = CGRect(x: 0, y: y,
-//                          width: calendarCollectionView.bounds.width,
-//                          height: calendarCollectionView.bounds.height)
-        calendarCollectionView.scrollRectToVisible(attr.frame, animated: animated)
+        let rect = CGRect(x: attr.frame.minX, y: attr.frame.minY,
+                          width: calendarCollectionView.bounds.width,
+                          height: calendarCollectionView.bounds.height)
+        calendarCollectionView.scrollRectToVisible(rect, animated: animated)
     }
 
     private func setup() {
@@ -174,10 +180,7 @@ public final class XOCalendarView: UIView {
         calendarCollectionView.snp.makeConstraints {
             $0.leading.trailing.equalTo(dayHeaderView)
             $0.bottom.equalToSuperview()
-            let topOffset = showMonthHeaderForVerticalLayout
-                ? -XOCalendarMonthHeaderView.height
-                : 0
-            $0.top.equalTo(dayHeaderView.snp.bottom).offset(0)
+            $0.top.equalTo(dayHeaderView.snp.bottom)
             var height = Layout.dayLabelLength * Layout.maxNumberOfRows
             if showMonthHeaderForVerticalLayout {
                 height += XOCalendarMonthHeaderView.height
@@ -186,16 +189,18 @@ public final class XOCalendarView: UIView {
         }
     }
 
-    var headerReferenceSize: CGSize {
-        let width = calendarCollectionView.frame.size.width
-        let size: CGSize
-        if showMonthHeaderForVerticalLayout {
-            size = CGSize(width: width,
-                          height: XOCalendarMonthHeaderView.height)
-        } else {
-            size = .zero
+    func updateHeader(currentIndexPath: IndexPath) {
+        let indexPath = currentIndexPath
+        displayingSection = indexPath.section
+        guard let yearDate = calendar.dateOfFirstDayInSection(indexPath.section),
+            let (year, month) = calendar.yearAndMonthOfDate(yearDate)
+            else {
+                return
         }
-        return size
+
+        calendarHeaderView.setup(year: year, month: month)
+        displayingDate = yearDate
+        delegate?.calendar(self, didScrollToMonth: yearDate)
     }
 
     public override func layoutSubviews() {
@@ -255,10 +260,10 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
         guard indexPath.section == 0
             && indexPath.item == 0,
             !calendarHeaderView.didSetText else { return }
-        if let _ = todayIndexPath {
+        if let todayIndexPath = todayIndexPath {
             do {
                 try scrollToToday(animated: false)
-                scrollViewDidEndDecelerating(collectionView)
+                updateHeader(currentIndexPath: todayIndexPath)
             } catch {
                 debugPrint(error)
             }
@@ -335,24 +340,11 @@ extension XOCalendarView: UIScrollViewDelegate {
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         calculateDateBasedOnScrollViewPosition(scrollView: scrollView)
     }
-
     func calculateDateBasedOnScrollViewPosition(scrollView: UIScrollView) {
-        if let indexPath = calendarCollectionView.indexPathsForVisibleItems.min() {
-//            let section = calendar.getSection(indexPath.section)
-//            print("indexPath:", indexPath)
-//            print(section)
-            displayingSection = indexPath.section
-            guard let yearDate = calendar.dateOfFirstDayInSection(indexPath.section),
-                let (year, month) = calendar.yearAndMonthOfDate(yearDate)
-                else {
-                    return
-            }
-            print(year, month)
+        guard let indexPath = calendarCollectionView.indexPathsForVisibleItems.min()
+            else { return }
+        updateHeader(currentIndexPath: indexPath)
 
-            calendarHeaderView.setup(year: year, month: month)
-            displayingDate = yearDate
-            delegate?.calendar(self, didScrollToMonth: yearDate)
-        }
 //        let cvbounds = calendarCollectionView.bounds
 //        var page: Int = 0
 //        switch calendarLayout.scrollDirection {
