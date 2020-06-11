@@ -46,6 +46,8 @@ public final class FCalendarView: UIView {
         }
     }
 
+    public var updateCalendarHeaderWhileScrolling = true
+
     private var dateBeingSelectedByUser : Date?
 
     private var startDateCache: Date = Date()
@@ -191,12 +193,14 @@ public final class FCalendarView: UIView {
 
     func updateHeader(currentIndexPath: IndexPath) {
         let indexPath = currentIndexPath
+        if updateCalendarHeaderWhileScrolling
+            && indexPath.section == displayingSection {
+            return
+        }
         displayingSection = indexPath.section
         guard let yearDate = calendar.dateOfFirstDayInSection(indexPath.section),
             let (year, month) = calendar.yearAndMonthOfDate(yearDate)
-            else {
-                return
-        }
+            else { return }
 
         calendarHeaderView.setup(year: year, month: month)
         displayingDate = yearDate
@@ -258,7 +262,7 @@ extension FCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlo
             scrollToToday(animated: false)
             updateHeader(currentIndexPath: todayIndexPath)
         } else {
-            scrollViewDidEndDecelerating(collectionView)
+            calculateDateBasedOnScrollViewPosition(scrollView: collectionView)
         }
     }
 
@@ -316,22 +320,34 @@ extension FCalendarView: UICollectionViewDelegate {
 }
 
 extension FCalendarView: UIScrollViewDelegate {
-
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if updateCalendarHeaderWhileScrolling { return }
         if !decelerate {
             calculateDateBasedOnScrollViewPosition(scrollView: scrollView)
         }
     }
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if updateCalendarHeaderWhileScrolling { return }
         calculateDateBasedOnScrollViewPosition(scrollView: scrollView)
     }
 
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if updateCalendarHeaderWhileScrolling { return }
         calculateDateBasedOnScrollViewPosition(scrollView: scrollView)
     }
+
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if !updateCalendarHeaderWhileScrolling { return }
+        calculateDateBasedOnScrollViewPosition(scrollView: scrollView)
+    }
+
     func calculateDateBasedOnScrollViewPosition(scrollView: UIScrollView) {
-        guard let indexPath = calendarCollectionView.indexPathsForVisibleItems.min()
+        let size = CGSize(width: scrollView.bounds.size.width,
+                          height: FCalendarMonthHeaderView.height)
+        let rect = CGRect(origin: scrollView.contentOffset,
+                          size: size)
+        guard let firstElement = calendarLayout.layoutAttributesForElements(in: rect)?.first
             else { return }
-        updateHeader(currentIndexPath: indexPath)
+        updateHeader(currentIndexPath: firstElement.indexPath)
     }
 }

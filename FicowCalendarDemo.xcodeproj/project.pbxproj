@@ -24,7 +24,6 @@
 		89BDDF86247BB72C007D3F20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89BDDF84247BB72C007D3F20 /* Main.storyboard */; };
 		89BDDF88247BB72F007D3F20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89BDDF87247BB72F007D3F20 /* Assets.xcassets */; };
 		89BDDF8B247BB72F007D3F20 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89BDDF89247BB72F007D3F20 /* LaunchScreen.storyboard */; };
-		89BDDF96247BB72F007D3F20 /* FicowCalendarDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BDDF95247BB72F007D3F20 /* FicowCalendarDemoTests.swift */; };
 		89BDDFA1247BB72F007D3F20 /* FicowCalendarDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BDDFA0247BB72F007D3F20 /* FicowCalendarDemoUITests.swift */; };
 		89EDAAE9247E1598004098F6 /* FCalendarDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EDAAE8247E1598004098F6 /* FCalendarDayCell.swift */; };
 		89EDAAEB247E190A004098F6 /* FCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EDAAEA247E190A004098F6 /* FCalendar.swift */; };
@@ -71,7 +70,6 @@
 		89BDDF8A247BB72F007D3F20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89BDDF8C247BB72F007D3F20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89BDDF91247BB72F007D3F20 /* FicowCalendarDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FicowCalendarDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		89BDDF95247BB72F007D3F20 /* FicowCalendarDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicowCalendarDemoTests.swift; sourceTree = "<group>"; };
 		89BDDF97247BB72F007D3F20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89BDDF9C247BB72F007D3F20 /* FicowCalendarDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FicowCalendarDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		89BDDFA0247BB72F007D3F20 /* FicowCalendarDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicowCalendarDemoUITests.swift; sourceTree = "<group>"; };
@@ -173,11 +171,10 @@
 		89BDDF94247BB72F007D3F20 /* FicowCalendarDemoTests */ = {
 			isa = PBXGroup;
 			children = (
-				89BDDF95247BB72F007D3F20 /* FicowCalendarDemoTests.swift */,
-				89BDDF97247BB72F007D3F20 /* Info.plist */,
 				890F4887248F9A050085AA71 /* FCalendarTests.swift */,
 				8985994A2490E570004D4C31 /* FCalendarFlowLayoutTests.swift */,
 				892122DE2491E9150050EAAC /* CalendarSections.json */,
+				89BDDF97247BB72F007D3F20 /* Info.plist */,
 			);
 			path = FicowCalendarDemoTests;
 			sourceTree = "<group>";
@@ -460,7 +457,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				890F4888248F9A050085AA71 /* FCalendarTests.swift in Sources */,
-				89BDDF96247BB72F007D3F20 /* FicowCalendarDemoTests.swift in Sources */,
 				8985994B2490E570004D4C31 /* FCalendarFlowLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

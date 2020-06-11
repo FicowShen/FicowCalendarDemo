@@ -139,29 +139,7 @@ final class FCalendarVerticalFlowLayout: FCalendarFlowLayout {
     }
     private func verticalStartOfSection(_ section: Int) -> CGFloat {
         var caculatedSection = 0
-        var left = caculatedSection, right = section
-        var mid = right / 2
-        while true {
-            if sectionVerticalStart[mid] != nil {
-                if sectionVerticalStart[mid + 1] != nil {
-                    left = mid + 1
-                } else {
-                    caculatedSection = mid
-                    break
-                }
-            } else {
-                right = mid - 1
-            }
-            mid = (left + right) / 2
-            if left >= right {
-                caculatedSection = mid
-                break
-            }
-        }
-        var verticalStart: CGFloat = 0
-        if caculatedSection < section {
-            verticalStart = sectionVerticalStart[caculatedSection] ?? 0
-        }
+        var verticalStart: CGFloat = sectionVerticalStart[caculatedSection] ?? 0
         let minItemCountOfMonth = numberOfRows.min * numberOfDaysInAWeek
         let midItemCountOfMonth = numberOfRows.mid * numberOfDaysInAWeek
         while caculatedSection < section {

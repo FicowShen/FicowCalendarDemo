@@ -20,8 +20,8 @@ final class ViewController: UIViewController {
         return Self.dateFormatter.date(from: s)
     }
 
-    var minimumDate = yyyyMMddDateFromString("2018-12-03") ?? Date()
-    var maximumDate = yyyyMMddDateFromString("2025-12-03") ?? Date()
+    var minimumDate = yyyyMMddDateFromString("1001-12-03") ?? Date()
+    var maximumDate = yyyyMMddDateFromString("2100-12-03") ?? Date()
 
     private lazy var calendarView: FCalendarView = {
         let calendar = FCalendarView()
@@ -57,8 +57,8 @@ final class ViewController: UIViewController {
         picker.datePickerMode = .date
         picker.calendar = NSCalendar.current
         picker.date = Date()
-        picker.minimumDate = Self.yyyyMMddDateFromString("2016-12-03")
-        picker.maximumDate = Self.yyyyMMddDateFromString("2026-12-03")
+        picker.minimumDate = Self.yyyyMMddDateFromString("1000-12-03")
+        picker.maximumDate = Self.yyyyMMddDateFromString("3000-12-03")
         picker.addTarget(self, action: #selector(pickerValueChanged), for: .valueChanged)
         return picker
     }()
@@ -97,8 +97,6 @@ final class ViewController: UIViewController {
         operationStackView.addArrangedSubview(datePicker)
 
         calendarView.reloadSections()
-//        calendarView.setNeedsLayout()
-//        calendar.reloadSections()
     }
 
     @objc private func buttonPressed(_ sender: UIButton) {
