@@ -9,10 +9,6 @@ public enum XOCalendarDay: Int {
     case sunday, monday, tuesday, wednesday, thursday, friday, saturday
 }
 
-public enum XOCalendarError: Error {
-    case dateOutOfRange(String)
-}
-
 public final class XOCalendar {
 
     public struct CalendarSection {
@@ -110,10 +106,10 @@ public final class XOCalendar {
                                       day: indexPath.item)
     }
 
-    public func indexPathOfDate(_ date: Date) throws -> IndexPath? {
+    public func indexPathOfDate(_ date: Date) -> IndexPath? {
         guard startMonthDateCache.compare(date) == .orderedAscending &&
             endDateCache.compare(date) == .orderedDescending else {
-                throw XOCalendarError.dateOutOfRange(date.description)
+                return nil
         }
         let dateToStartMonth = gregorian.components([.month, .day],
                                                     from: startMonthDateCache,
@@ -130,31 +126,29 @@ public final class XOCalendar {
         // offset by the number of months
         monthOffsetComponents.month = sectionIndex
 
-        guard let correctMonthForSectionDate = gregorian.date(byAdding: monthOffsetComponents, to: startMonthDateCache, options: []) else {
-            fatalError("generateSection for section \(sectionIndex) failed.")
-        }
+        guard let correctMonthForSectionDate = gregorian.date(byAdding: monthOffsetComponents, to: startMonthDateCache, options: [])
+            else { fatalError("generateSection for section \(sectionIndex) failed.") }
         let numberOfDaysInMonth = gregorian.range(of: .day, in: .month, for: correctMonthForSectionDate).length
         var firstWeekdayOfMonthIndex = gregorian.component(.weekday, from: correctMonthForSectionDate)
         // for the Gregorian 1 is Sunday
         // firstWeekdayOfMonthIndex should be 0-Indexed
         firstWeekdayOfMonthIndex -= 1
         // push it modularly so that it can won't be minus numbers
-        firstWeekdayOfMonthIndex = (firstWeekdayOfMonthIndex + 7) % 7
+        firstWeekdayOfMonthIndex = (firstWeekdayOfMonthIndex - firstWeekday.rawValue + 7) % 7
 
         return CalendarSection(indexOfFirstItem: firstWeekdayOfMonthIndex,
                                numberOfItems: numberOfDaysInMonth)
     }
 
     private func loadAndCacheStartMonth() {
-        guard let dateOfFirstDayInStartMonth = dateOfFirstDayInStartMonth else {
-            return
-        }
+        guard let dateOfFirstDayInStartMonth = dateOfFirstDayInStartMonth
+            else { fatalError("Cannot get dateOfFirstDayInStartMonth") }
         startMonthDateCache = dateOfFirstDayInStartMonth
     }
 
     private func loadAndCacheToday() {
         let today = Date()
-        todayIndexPath = try? indexPathOfDate(today)
+        todayIndexPath = indexPathOfDate(today)
     }
 }
 

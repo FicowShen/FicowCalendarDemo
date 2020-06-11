@@ -124,27 +124,27 @@ public final class XOCalendarView: UIView {
                          section: indexPath.section)
     }
 
-    public func scrollToToday(animated: Bool = true) throws {
+    public func scrollToToday(animated: Bool = true) {
         guard let todayIndexPath = todayIndexPath else { return }
-        try scrollToSection(todayIndexPath.section, animated: animated)
+        scrollToSection(todayIndexPath.section, animated: animated)
     }
 
-    public func scrollToPreviousSection(animated: Bool = true) throws {
+    public func scrollToPreviousSection(animated: Bool = true) {
         guard var displayingSection = displayingSection else { return }
         displayingSection -= 1
-        try scrollToSection(displayingSection, animated: animated)
+        scrollToSection(displayingSection, animated: animated)
     }
 
-    public func scrollToNextSection(animated: Bool = true) throws {
+    public func scrollToNextSection(animated: Bool = true) {
         guard var displayingSection = displayingSection else { return }
         displayingSection += 1
-        try scrollToSection(displayingSection, animated: animated)
+        scrollToSection(displayingSection, animated: animated)
     }
 
-    public func scrollToDate(_ date: Date, animated: Bool) throws {
-        guard let indexPath = try calendar.indexPathOfDate(date)
+    public func scrollToDate(_ date: Date, animated: Bool) {
+        guard let indexPath = calendar.indexPathOfDate(date)
             else { return }
-        try scrollToSection(indexPath.section, animated: animated)
+        scrollToSection(indexPath.section, animated: animated)
     }
 
     public func reloadSections() {
@@ -152,9 +152,9 @@ public final class XOCalendarView: UIView {
         calendarCollectionView.reloadData()
     }
 
-    private func scrollToSection(_ section: Int, animated: Bool = true) throws {
+    private func scrollToSection(_ section: Int, animated: Bool = true) {
         guard let date = calendar.dateOfFirstDayInSection(section),
-            let indexPath = try calendar.indexPathOfDate(date),
+            let indexPath = calendar.indexPathOfDate(date),
             let attr = calendarLayout.layoutAttributesForItem(at: indexPath)
             else { return }
         let rect = CGRect(x: attr.frame.minX, y: attr.frame.minY,
@@ -164,7 +164,7 @@ public final class XOCalendarView: UIView {
     }
 
     private func setup() {
-//        firstWeekday = .saturday
+//        firstWeekday = .monday
         calendarHeaderView.backgroundColor = .white
         [calendarHeaderView, dayHeaderView, calendarCollectionView].reversed().forEach(addSubview)
         calendarHeaderView.snp.makeConstraints {
@@ -247,12 +247,6 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
             dayCell.isToday = todayIndex == indexPath
         }
 
-//        if let eventsForDay = eventsByIndexPath[fromStartOfMonthIndexPath] {
-//            dayCell.eventsCount = eventsForDay.count
-//        } else {
-//            dayCell.eventsCount = 0
-//        }
-
         return dayCell
     }
 
@@ -261,12 +255,8 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
             && indexPath.item == 0,
             !calendarHeaderView.didSetText else { return }
         if let todayIndexPath = todayIndexPath {
-            do {
-                try scrollToToday(animated: false)
-                updateHeader(currentIndexPath: todayIndexPath)
-            } catch {
-                debugPrint(error)
-            }
+            scrollToToday(animated: false)
+            updateHeader(currentIndexPath: todayIndexPath)
         } else {
             scrollViewDidEndDecelerating(collectionView)
         }
@@ -297,13 +287,12 @@ extension XOCalendarView: UICollectionViewDelegate {
                                           section: indexPath.section)
         if let dateUserSelected = calendar.dateAtIndexPath(calendarIndexPath) {
             dateBeingSelectedByUser = dateUserSelected
-            // Optional protocol method (the delegate can "object")
-            if let canSelectFromDelegate = delegate?.calendar(self, canSelectDate: dateUserSelected) {
-                return canSelectFromDelegate
+            if let canSelectDate = delegate?.calendar(self, canSelectDate: dateUserSelected) {
+                return canSelectDate
             }
-            return true // it can select any date by default
+            return true
         }
-        return false // if date is out of scope
+        return false
     }
 
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -344,29 +333,5 @@ extension XOCalendarView: UIScrollViewDelegate {
         guard let indexPath = calendarCollectionView.indexPathsForVisibleItems.min()
             else { return }
         updateHeader(currentIndexPath: indexPath)
-
-//        let cvbounds = calendarCollectionView.bounds
-//        var page: Int = 0
-//        switch calendarLayout.scrollDirection {
-//        case .horizontal:
-//            let pageOfOffset: Int = Int(floor(calendarCollectionView.contentOffset.x / cvbounds.size.width))
-//            page = pageOfOffset > 0 ? pageOfOffset : 0
-//        case .vertical:
-//            let pageOfOffset: Int = Int(floor(calendarCollectionView.contentOffset.y / cvbounds.size.height))
-//            page = pageOfOffset > 0 ? pageOfOffset : 0
-//        @unknown default:
-//            fatalError("Unknown scrollDirection")
-//        }
-//
-//        displayingSection = page
-//        guard let yearDate = calendar.dateOfFirstDayInSection(page),
-//            let (year, month) = calendar.yearAndMonthOfDate(yearDate)
-//            else {
-//                return
-//        }
-//
-//        calendarHeaderView.setup(year: year, month: month)
-//        displayingDate = yearDate
-//        delegate?.calendar(self, didScrollToMonth: yearDate)
     }
 }

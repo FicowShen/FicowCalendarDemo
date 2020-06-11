@@ -20,8 +20,8 @@ final class ViewController: UIViewController {
         return Self.dateFormatter.date(from: s)
     }
 
-    var minimumDate = yyyyMMddDateFromString("2001-12-03") ?? Date()
-    var maximumDate = yyyyMMddDateFromString("2041-04-10") ?? Date()
+    var minimumDate = yyyyMMddDateFromString("2018-12-03") ?? Date()
+    var maximumDate = yyyyMMddDateFromString("2025-12-03") ?? Date()
 
     private lazy var calendarView: XOCalendarView = {
         let calendar = XOCalendarView()
@@ -57,8 +57,8 @@ final class ViewController: UIViewController {
         picker.datePickerMode = .date
         picker.calendar = NSCalendar.current
         picker.date = Date()
-        picker.minimumDate = Self.yyyyMMddDateFromString("2001-12-03")
-        picker.maximumDate = Self.yyyyMMddDateFromString("2031-12-03")
+        picker.minimumDate = Self.yyyyMMddDateFromString("2016-12-03")
+        picker.maximumDate = Self.yyyyMMddDateFromString("2026-12-03")
         picker.addTarget(self, action: #selector(pickerValueChanged), for: .valueChanged)
         return picker
     }()
@@ -102,32 +102,24 @@ final class ViewController: UIViewController {
     }
 
     @objc private func buttonPressed(_ sender: UIButton) {
-        do {
-            switch sender {
-            case previousButton:
-                try calendarView.scrollToPreviousSection()
-                print("previousButton")
-            case nextButton:
-                try calendarView.scrollToNextSection()
-                print("nextButton")
-            case todayButton:
-                try calendarView.scrollToToday()
-                print("todayButton")
-            default:
-                fatalError("Invalid button pressed")
-            }
-        } catch {
-            print(error)
+        switch sender {
+        case previousButton:
+            calendarView.scrollToPreviousSection()
+            print("previousButton")
+        case nextButton:
+            calendarView.scrollToNextSection()
+            print("nextButton")
+        case todayButton:
+            calendarView.scrollToToday()
+            print("todayButton")
+        default:
+            fatalError("Invalid button pressed")
         }
     }
 
     @objc private func pickerValueChanged() {
         print("datePicker.date:", datePicker.date)
-        do {
-            try calendarView.scrollToDate(datePicker.date, animated: true)
-        } catch {
-            print(error)
-        }
+        calendarView.scrollToDate(datePicker.date, animated: true)
     }
 }
 
