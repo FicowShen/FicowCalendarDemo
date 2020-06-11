@@ -23,8 +23,8 @@ final class ViewController: UIViewController {
     var minimumDate = yyyyMMddDateFromString("2018-12-03") ?? Date()
     var maximumDate = yyyyMMddDateFromString("2025-12-03") ?? Date()
 
-    private lazy var calendarView: XOCalendarView = {
-        let calendar = XOCalendarView()
+    private lazy var calendarView: FCalendarView = {
+        let calendar = FCalendarView()
         calendar.dataSource = self
         calendar.delegate = self
         calendar.showBorderWithRandomColor()
@@ -123,23 +123,23 @@ final class ViewController: UIViewController {
     }
 }
 
-extension ViewController: XOCalendarDataSource {
+extension ViewController: FCalendarDataSource {
     func startDate() -> Date? { minimumDate }
     func endDate() -> Date? { maximumDate }
 }
 
-extension ViewController: XOCalendarViewDelegate {
-    func calendar(_ calendar: XOCalendarView, canSelectDate date: Date) -> Bool {
+extension ViewController: FCalendarViewDelegate {
+    func calendar(_ calendar: FCalendarView, canSelectDate date: Date) -> Bool {
         true
     }
-    func calendar(_ calendar: XOCalendarView, didScrollToMonth date: Date) {
+    func calendar(_ calendar: FCalendarView, didScrollToMonth date: Date) {
         print(#function, date)
         currentMonthDate = date
     }
-    func calendar(_ calendar: XOCalendarView, didSelectDate date: Date) {
+    func calendar(_ calendar: FCalendarView, didSelectDate date: Date) {
         print(#function, date)
     }
-    func calendar(_ calendar: XOCalendarView, didDeselectDate date: Date) {
+    func calendar(_ calendar: FCalendarView, didDeselectDate date: Date) {
         print(#function, date)
     }
 }

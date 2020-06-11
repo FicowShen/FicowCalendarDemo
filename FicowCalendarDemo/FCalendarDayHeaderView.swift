@@ -1,18 +1,18 @@
 import UIKit
 
-final class XOCalendarDayHeaderView: UIStackView {
+final class FCalendarDayHeaderView: UIStackView {
 
     let weekdaySymbols: [String]
 
     /// Default to Sunday, 1 means Monday and so on
-    var firstWeekday: XOCalendarDay = .sunday {
+    var firstWeekday: FCalendarDay = .sunday {
         didSet {
             subviews.forEach { $0.removeFromSuperview() }
             setup()
         }
     }
 
-    init(weekdaySymbols: [String], firstWeekday: XOCalendarDay = .sunday) {
+    init(weekdaySymbols: [String], firstWeekday: FCalendarDay = .sunday) {
         self.weekdaySymbols = weekdaySymbols
         self.firstWeekday = firstWeekday
         super.init(frame: .zero)

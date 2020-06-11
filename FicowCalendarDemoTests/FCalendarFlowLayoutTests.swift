@@ -1,9 +1,9 @@
 import XCTest
 @testable import FicowCalendarDemo
 
-class XOCalendarFlowLayoutTests: XCTestCase {
+class FCalendarFlowLayoutTests: XCTestCase {
 
-    final class MockXOCalendarLayoutDataSource: NSObject, XOCalendarLayoutDataSource, UICollectionViewDataSource {
+    final class MockFCalendarLayoutDataSource: NSObject, FCalendarLayoutDataSource, UICollectionViewDataSource {
 
         var itemsInSection = [Int]()
         func numberOfItemsInSection(_ section: Int) -> Int {
@@ -21,17 +21,17 @@ class XOCalendarFlowLayoutTests: XCTestCase {
         }
     }
 
-    var dataSource: MockXOCalendarLayoutDataSource!
-    var layout: XOCalendarVerticalFlowLayout!
+    var dataSource: MockFCalendarLayoutDataSource!
+    var layout: FCalendarVerticalFlowLayout!
 
     let screenBounds = UIScreen.main.bounds
 
     override func setUp() {
         super.setUp()
-        dataSource = MockXOCalendarLayoutDataSource()
+        dataSource = MockFCalendarLayoutDataSource()
         dataSource.itemsInSection = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-        layout = XOCalendarVerticalFlowLayout(dataSource: dataSource)
+        layout = FCalendarVerticalFlowLayout(dataSource: dataSource)
         layout.headerReferenceSize = CGSize(width: screenBounds.width, height: 10)
         layout.itemSize = CGSize(width: screenBounds.width/7, height: 50)
     }

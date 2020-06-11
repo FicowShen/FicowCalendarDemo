@@ -20,16 +20,16 @@ struct CalendarSection: Decodable {
     let date: String
 }
 
-final class XOCalendarTests: XCTestCase {
-    var calendar: XOCalendar!
-    var dataSource: MockXOCalendarDataSource!
+final class FCalendarTests: XCTestCase {
+    var calendar: FCalendar!
+    var dataSource: MockFCalendarDataSource!
     let startDate = CalendarTestHelper.yyyyMMddDateFromString("2000-01-01")!
     let endDate = CalendarTestHelper.yyyyMMddDateFromString("2020-01-01")!
 
     override func setUp() {
         super.setUp()
-        calendar = XOCalendar()
-        dataSource = MockXOCalendarDataSource(start: startDate,
+        calendar = FCalendar()
+        dataSource = MockFCalendarDataSource(start: startDate,
                                               end: endDate)
         calendar.dataSource = dataSource
         calendar.reloadSections()
@@ -92,7 +92,7 @@ final class XOCalendarTests: XCTestCase {
 
 }
 
-struct MockXOCalendarDataSource: XOCalendarDataSource {
+struct MockFCalendarDataSource: FCalendarDataSource {
     let start: Date
     let end: Date
     func startDate() -> Date? { start }

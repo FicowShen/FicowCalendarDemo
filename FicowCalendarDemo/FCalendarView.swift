@@ -1,16 +1,16 @@
 import UIKit
 
-public protocol XOCalendarViewDelegate {
-    func calendar(_ calendar: XOCalendarView, canSelectDate date: Date) -> Bool
-    func calendar(_ calendar: XOCalendarView, didScrollToMonth date: Date)
-    func calendar(_ calendar: XOCalendarView, didSelectDate date: Date)
-    func calendar(_ calendar: XOCalendarView, didDeselectDate date: Date)
+public protocol FCalendarViewDelegate {
+    func calendar(_ calendar: FCalendarView, canSelectDate date: Date) -> Bool
+    func calendar(_ calendar: FCalendarView, didScrollToMonth date: Date)
+    func calendar(_ calendar: FCalendarView, didSelectDate date: Date)
+    func calendar(_ calendar: FCalendarView, didDeselectDate date: Date)
 }
 
-public final class XOCalendarView: UIView {
+public final class FCalendarView: UIView {
 
     enum Layout {
-        static let monthHeaderHeight: CGFloat = XOCalendarHeaderView.fixedHeaderHeight
+        static let monthHeaderHeight: CGFloat = FCalendarHeaderView.fixedHeaderHeight
         static let weekdayHeaderHeight: CGFloat = 40
         static let maxNumberOfRows: CGFloat = 6
         static let minNumberOfRows: CGFloat = maxNumberOfRows - 1
@@ -20,27 +20,27 @@ public final class XOCalendarView: UIView {
         static let weekdayHeaderHorizontalInset: CGFloat = fixedHeaderHorizontalInset/2
     }
 
-    static let monthHeaderReuseID = String(describing: XOCalendarMonthHeaderView.self)
-    static let dayCellReuseID = String(describing: XOCalendarDayCell.self)
+    static let monthHeaderReuseID = String(describing: FCalendarMonthHeaderView.self)
+    static let dayCellReuseID = String(describing: FCalendarDayCell.self)
 
-    public var dataSource: XOCalendarDataSource? {
+    public var dataSource: FCalendarDataSource? {
         didSet {
             calendar.dataSource = dataSource
         }
     }
 
-    public var delegate: XOCalendarViewDelegate?
+    public var delegate: FCalendarViewDelegate?
     public var isPagingEnabled: Bool {
         get { calendarCollectionView.isPagingEnabled }
         set { calendarCollectionView.isPagingEnabled = newValue }
     }
 
     public var scrollDirection: UICollectionView.ScrollDirection {
-        get { calendarLayout is XOCalendarVerticalFlowLayout ? .vertical : .horizontal }
+        get { calendarLayout is FCalendarVerticalFlowLayout ? .vertical : .horizontal }
         set {
             let layout = newValue == .vertical
-                ? XOCalendarVerticalFlowLayout(dataSource: calendar)
-                : XOCalendarHorizontalFlowLayout(dataSource: calendar)
+                ? FCalendarVerticalFlowLayout(dataSource: calendar)
+                : FCalendarHorizontalFlowLayout(dataSource: calendar)
             calendarCollectionView.collectionViewLayout = layout
             calendarCollectionView.reloadData()
         }
@@ -58,16 +58,16 @@ public final class XOCalendarView: UIView {
     private(set) var selectedIndexPaths: [IndexPath] = [IndexPath]()
     private(set) var selectedDates: [Date] = [Date]()
 
-    private let calendarHeaderView: XOCalendarHeaderView = XOCalendarHeaderView(frame: .zero)
+    private let calendarHeaderView: FCalendarHeaderView = FCalendarHeaderView(frame: .zero)
 
-    private let dayHeaderView = XOCalendarDayHeaderView(weekdaySymbols: XOCalendar.dateFormatter.weekdaySymbols)
+    private let dayHeaderView = FCalendarDayHeaderView(weekdaySymbols: FCalendar.dateFormatter.weekdaySymbols)
 
-    private lazy var calendarLayout: XOCalendarFlowLayout = XOCalendarVerticalFlowLayout(dataSource: calendar)
+    private lazy var calendarLayout: FCalendarFlowLayout = FCalendarVerticalFlowLayout(dataSource: calendar)
 
     private lazy var calendarCollectionView : UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.calendarLayout)
-        cv.register(XOCalendarDayCell.self, forCellWithReuseIdentifier: Self.dayCellReuseID)
-        cv.register(XOCalendarMonthHeaderView.self, forSupplementaryViewOfKind: Self.monthHeaderReuseID, withReuseIdentifier: Self.monthHeaderReuseID)
+        cv.register(FCalendarDayCell.self, forCellWithReuseIdentifier: Self.dayCellReuseID)
+        cv.register(FCalendarMonthHeaderView.self, forSupplementaryViewOfKind: Self.monthHeaderReuseID, withReuseIdentifier: Self.monthHeaderReuseID)
         cv.dataSource = self
         cv.delegate = self
         cv.backgroundColor = .clear
@@ -77,9 +77,9 @@ public final class XOCalendarView: UIView {
         return cv
     }()
 
-    private let calendar = XOCalendar()
+    private let calendar = FCalendar()
 
-    private var firstWeekday: XOCalendarDay = .sunday {
+    private var firstWeekday: FCalendarDay = .sunday {
         didSet {
             calendar.firstWeekday = firstWeekday
             dayHeaderView.firstWeekday = firstWeekday
@@ -87,7 +87,7 @@ public final class XOCalendarView: UIView {
     }
 
     private var showMonthHeaderForVerticalLayout: Bool {
-        return calendarLayout is XOCalendarVerticalFlowLayout
+        return calendarLayout is FCalendarVerticalFlowLayout
     }
 
     private var todayIndexPath: IndexPath? {
@@ -101,7 +101,7 @@ public final class XOCalendarView: UIView {
         let size: CGSize
         if showMonthHeaderForVerticalLayout {
             size = CGSize(width: width,
-                          height: XOCalendarMonthHeaderView.height)
+                          height: FCalendarMonthHeaderView.height)
         } else {
             size = .zero
         }
@@ -183,7 +183,7 @@ public final class XOCalendarView: UIView {
             $0.top.equalTo(dayHeaderView.snp.bottom)
             var height = Layout.dayLabelLength * Layout.maxNumberOfRows
             if showMonthHeaderForVerticalLayout {
-                height += XOCalendarMonthHeaderView.height
+                height += FCalendarMonthHeaderView.height
             }
             $0.height.equalTo(height)
         }
@@ -213,7 +213,7 @@ public final class XOCalendarView: UIView {
     }
 }
 
-extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension FCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return calendar.numberOfSections
     }
@@ -223,8 +223,8 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.dayCellReuseID, for: indexPath) as? XOCalendarDayCell
-            else { fatalError("Dequeue \(XOCalendarDayCell.self) failed.") }
+        guard let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.dayCellReuseID, for: indexPath) as? FCalendarDayCell
+            else { fatalError("Dequeue \(FCalendarDayCell.self) failed.") }
 
         let section = calendar.getSection(indexPath.section)
         let indexOfFirstItem = section.indexOfFirstItem
@@ -263,8 +263,8 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
     }
 
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: Self.monthHeaderReuseID, withReuseIdentifier: Self.monthHeaderReuseID, for: indexPath) as? XOCalendarMonthHeaderView
-            else { fatalError("Dequeue \(XOCalendarMonthHeaderView.self) failed.") }
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: Self.monthHeaderReuseID, withReuseIdentifier: Self.monthHeaderReuseID, for: indexPath) as? FCalendarMonthHeaderView
+            else { fatalError("Dequeue \(FCalendarMonthHeaderView.self) failed.") }
         if let yearDate = calendar.dateOfFirstDayInSection(indexPath.section),
             let (year, month) = calendar.yearAndMonthOfDate(yearDate) {
             headerView.setup(year: year, month: month)
@@ -277,7 +277,7 @@ extension XOCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFl
     }
 }
 
-extension XOCalendarView: UICollectionViewDelegate {
+extension FCalendarView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let section = calendar.sections[indexPath.section]
             else { fatalError("Invalid indexPath \(indexPath) selected.") }
@@ -315,7 +315,7 @@ extension XOCalendarView: UICollectionViewDelegate {
     }
 }
 
-extension XOCalendarView: UIScrollViewDelegate {
+extension FCalendarView: UIScrollViewDelegate {
 
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {

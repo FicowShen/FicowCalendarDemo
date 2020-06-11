@@ -1,12 +1,12 @@
 import UIKit
 import SnapKit
 
-final class XOCalendarMonthHeaderView: UICollectionReusableView {
+final class FCalendarMonthHeaderView: UICollectionReusableView {
 
     static let height: CGFloat = 72
 
-    private let headerView = XOCalendarHeaderView()
-    private let horizontalInset = XOCalendarView.Layout.weekdayHeaderHorizontalInset
+    private let headerView = FCalendarHeaderView()
+    private let horizontalInset = FCalendarView.Layout.weekdayHeaderHorizontalInset
 
     override init(frame: CGRect) {
         super.init(frame: frame)

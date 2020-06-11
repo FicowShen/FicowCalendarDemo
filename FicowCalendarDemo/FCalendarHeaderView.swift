@@ -1,6 +1,6 @@
 import UIKit
 
-final class XOCalendarHeaderView: UIView {
+final class FCalendarHeaderView: UIView {
 
     static let fixedHeaderHeight: CGFloat = 52
     static let scrollableHeaderHeight: CGFloat = fixedHeaderHeight/2

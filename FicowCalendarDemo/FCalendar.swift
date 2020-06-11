@@ -1,15 +1,15 @@
 import UIKit
 
-public protocol XOCalendarDataSource {
+public protocol FCalendarDataSource {
     func startDate() -> Date?
     func endDate() -> Date?
 }
 
-public enum XOCalendarDay: Int {
+public enum FCalendarDay: Int {
     case sunday, monday, tuesday, wednesday, thursday, friday, saturday
 }
 
-public final class XOCalendar {
+public final class FCalendar {
 
     public struct CalendarSection {
         let indexOfFirstItem: Int
@@ -18,7 +18,7 @@ public final class XOCalendar {
 
     static let dateFormatter = DateFormatter()
 
-    public var firstWeekday: XOCalendarDay = .sunday {
+    public var firstWeekday: FCalendarDay = .sunday {
         didSet {
             gregorian.firstWeekday = firstWeekday.rawValue
             reloadSections()
@@ -29,7 +29,7 @@ public final class XOCalendar {
         return gregorian.numberOfMonth(from: startDateCache, to: endDateCache)
     }
 
-    var dataSource: XOCalendarDataSource?
+    var dataSource: FCalendarDataSource?
     private(set) var todayIndexPath: IndexPath?
     private(set) var sections = [Int: CalendarSection]()
 
@@ -37,7 +37,7 @@ public final class XOCalendar {
         var calendar = NSCalendar(identifier: .gregorian)!
         calendar.timeZone = NSTimeZone.default as TimeZone
         // https://stackoverflow.com/a/16876427
-        calendar.firstWeekday = XOCalendarDay.sunday.rawValue
+        calendar.firstWeekday = FCalendarDay.sunday.rawValue
         return calendar
     }()
 

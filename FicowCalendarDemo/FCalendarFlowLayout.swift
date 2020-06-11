@@ -1,17 +1,17 @@
 import UIKit
 
-protocol XOCalendarLayoutDataSource: class {
+protocol FCalendarLayoutDataSource: class {
     func numberOfItemsInSection(_ section: Int) -> Int
 }
 
-extension XOCalendar: XOCalendarLayoutDataSource {}
+extension FCalendar: FCalendarLayoutDataSource {}
 
-class XOCalendarFlowLayout: UICollectionViewFlowLayout {
+class FCalendarFlowLayout: UICollectionViewFlowLayout {
 
-    let dataSource: XOCalendarLayoutDataSource
+    let dataSource: FCalendarLayoutDataSource
     let numberOfDaysInAWeek = 7
 
-    init(dataSource: XOCalendarLayoutDataSource) {
+    init(dataSource: FCalendarLayoutDataSource) {
         self.dataSource = dataSource
         super.init()
         setup()
@@ -48,7 +48,7 @@ class XOCalendarFlowLayout: UICollectionViewFlowLayout {
                           collectionView: UICollectionView) {}
 }
 
-final class XOCalendarHorizontalFlowLayout: XOCalendarFlowLayout {
+final class FCalendarHorizontalFlowLayout: FCalendarFlowLayout {
     override func setup() {
         super.setup()
         scrollDirection = .horizontal
@@ -66,7 +66,7 @@ final class XOCalendarHorizontalFlowLayout: XOCalendarFlowLayout {
     }
 }
 
-final class XOCalendarVerticalFlowLayout: XOCalendarFlowLayout {
+final class FCalendarVerticalFlowLayout: FCalendarFlowLayout {
 
     override var itemSize: CGSize {
         didSet {

@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class XOCalendarDayCell: UICollectionViewCell {
+final class FCalendarDayCell: UICollectionViewCell {
 
     private static let normalTextColor: UIColor = .rgb(red: 6, green: 25, blue: 41)
     private static let selectedTextColor: UIColor = .white
