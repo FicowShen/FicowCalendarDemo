@@ -20,7 +20,15 @@ final class ViewController: UIViewController {
         return Self.dateFormatter.date(from: s)
     }
 
-    var minimumDate = yyyyMMddDateFromString("1001-12-03") ?? Date()
+    private static var firstDayOfCurrentMonth: Date? {
+        let calendar = Calendar(identifier: .gregorian)
+        var components = calendar.dateComponents([.year, .month, .day], from: Date())
+        components.day = 1
+        return calendar.date(from: components)
+    }
+
+    var minimumDate = firstDayOfCurrentMonth
+//    var minimumDate = yyyyMMddDateFromString("2020-12-03") ?? Date()
     var maximumDate = yyyyMMddDateFromString("2100-12-03") ?? Date()
 
     private lazy var calendarView: FCalendarView = {

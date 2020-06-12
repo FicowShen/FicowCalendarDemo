@@ -5,6 +5,7 @@ final class FCalendarDayCell: UICollectionViewCell {
 
     private static let normalTextColor: UIColor = .rgb(red: 6, green: 25, blue: 41)
     private static let selectedTextColor: UIColor = .white
+    private static let dimmedTextColor: UIColor = .rgb(red: 150, green: 153, blue: 160)
 
     private let textLabel: UILabel = {
         let label = UILabel()
@@ -47,6 +48,14 @@ final class FCalendarDayCell: UICollectionViewCell {
     var isDayInCurrentSection = false {
         didSet {
             isHidden = !isDayInCurrentSection
+        }
+    }
+
+    var isDimmed = false {
+        didSet {
+            textLabel.textColor = isDimmed
+                ? Self.dimmedTextColor
+                : Self.normalTextColor
         }
     }
 

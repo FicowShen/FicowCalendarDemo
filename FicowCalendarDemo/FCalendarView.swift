@@ -46,6 +46,7 @@ public final class FCalendarView: UIView {
         }
     }
 
+    public var dimPastDays = false
     public var updateCalendarHeaderWhileScrolling = true
 
     private var dateBeingSelectedByUser : Date?
@@ -167,6 +168,7 @@ public final class FCalendarView: UIView {
 
     private func setup() {
 //        firstWeekday = .monday
+        dimPastDays = true
         calendarHeaderView.backgroundColor = .white
         [calendarHeaderView, dayHeaderView, calendarCollectionView].reversed().forEach(addSubview)
         calendarHeaderView.snp.makeConstraints {
@@ -249,6 +251,9 @@ extension FCalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlo
 
         if let todayIndex = todayIndexPath {
             dayCell.isToday = todayIndex == indexPath
+            if dimPastDays {
+                dayCell.isDimmed = indexPath < todayIndex
+            }
         }
 
         return dayCell
