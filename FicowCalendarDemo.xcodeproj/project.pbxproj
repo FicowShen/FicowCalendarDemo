@@ -61,7 +61,7 @@
 		896C27A42484E42500EB0BA4 /* FCalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCalendarFlowLayout.swift; sourceTree = "<group>"; };
 		8985994A2490E570004D4C31 /* FCalendarFlowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCalendarFlowLayoutTests.swift; sourceTree = "<group>"; };
 		89AB057924875BA400F8BD56 /* FCalendarDayHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCalendarDayHeaderView.swift; sourceTree = "<group>"; };
-		89BDDF7B247BB72C007D3F20 /* FicowCalendarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FicowCalendarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		89BDDF7B247BB72C007D3F20 /* FicowCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FicowCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89BDDF7E247BB72C007D3F20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		89BDDF80247BB72C007D3F20 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		89BDDF82247BB72C007D3F20 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 		89BDDF7C247BB72C007D3F20 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				89BDDF7B247BB72C007D3F20 /* FicowCalendarDemo.app */,
+				89BDDF7B247BB72C007D3F20 /* FicowCalendar.app */,
 				89BDDF91247BB72F007D3F20 /* FicowCalendarDemoTests.xctest */,
 				89BDDF9C247BB72F007D3F20 /* FicowCalendarDemoUITests.xctest */,
 			);
@@ -217,7 +217,7 @@
 			);
 			name = FicowCalendarDemo;
 			productName = FicowCalendarDemo;
-			productReference = 89BDDF7B247BB72C007D3F20 /* FicowCalendarDemo.app */;
+			productReference = 89BDDF7B247BB72C007D3F20 /* FicowCalendar.app */;
 			productType = "com.apple.product-type.application";
 		};
 		89BDDF90247BB72F007D3F20 /* FicowCalendarDemoTests */ = {
@@ -631,7 +631,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.theknotww.FicowCalendarDemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FicowCalendar;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -650,7 +650,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.theknotww.FicowCalendarDemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FicowCalendar;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

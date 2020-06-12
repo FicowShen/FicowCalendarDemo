@@ -349,7 +349,8 @@ extension FCalendarView: UIScrollViewDelegate {
     func calculateDateBasedOnScrollViewPosition(scrollView: UIScrollView) {
         let size = CGSize(width: scrollView.bounds.size.width,
                           height: FCalendarMonthHeaderView.height)
-        let rect = CGRect(origin: scrollView.contentOffset,
+        let rect = CGRect(origin: CGPoint(x: scrollView.contentOffset.x,
+                                          y: scrollView.contentOffset.y + 17),
                           size: size)
         guard let firstElement = calendarLayout.layoutAttributesForElements(in: rect)?.first
             else { return }
