@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "89BDDF7A247BB72C007D3F20"
-               BuildableName = "FicowCalendarDemo.app"
+               BuildableName = "FicowCalendar.app"
                BlueprintName = "FicowCalendarDemo"
                ReferencedContainer = "container:FicowCalendarDemo.xcodeproj">
             </BuildableReference>
@@ -66,7 +66,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "89BDDF7A247BB72C007D3F20"
-            BuildableName = "FicowCalendarDemo.app"
+            BuildableName = "FicowCalendar.app"
             BlueprintName = "FicowCalendarDemo"
             ReferencedContainer = "container:FicowCalendarDemo.xcodeproj">
          </BuildableReference>
@@ -83,7 +83,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "89BDDF7A247BB72C007D3F20"
-            BuildableName = "FicowCalendarDemo.app"
+            BuildableName = "FicowCalendar.app"
             BlueprintName = "FicowCalendarDemo"
             ReferencedContainer = "container:FicowCalendarDemo.xcodeproj">
          </BuildableReference>
