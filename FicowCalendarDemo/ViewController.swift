@@ -43,7 +43,6 @@ final class ViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.backgroundColor = .white
         view.showBorderWithRandomColor()
         return view
     }()
@@ -56,9 +55,9 @@ final class ViewController: UIViewController {
         return stack
     }()
 
-    private lazy var todayButton: UIButton = Self.makeButton(title: " - today - ", target: self)
-    private lazy var previousButton: UIButton = Self.makeButton(title: " < previous month  ", target: self)
-    private lazy var nextButton: UIButton = Self.makeButton(title: "  next month  > ", target: self)
+    private lazy var todayButton: UIButton = Self.makeButton(title: " today ", target: self)
+    private lazy var previousButton: UIButton = Self.makeButton(title: " < last month ", target: self)
+    private lazy var nextButton: UIButton = Self.makeButton(title: " next month > ", target: self)
 
     private lazy var datePicker: UIDatePicker = {
         let picker = UIDatePicker()

@@ -35,17 +35,6 @@ public final class FCalendarView: UIView {
         set { calendarCollectionView.isPagingEnabled = newValue }
     }
 
-    public var scrollDirection: UICollectionView.ScrollDirection {
-        get { calendarLayout is FCalendarVerticalFlowLayout ? .vertical : .horizontal }
-        set {
-            let layout = newValue == .vertical
-                ? FCalendarVerticalFlowLayout(dataSource: calendar)
-                : FCalendarHorizontalFlowLayout(dataSource: calendar)
-            calendarCollectionView.collectionViewLayout = layout
-            calendarCollectionView.reloadData()
-        }
-    }
-
     public var dimPastDays = false
     public var updateCalendarHeaderWhileScrolling = true
 
@@ -99,7 +88,7 @@ public final class FCalendarView: UIView {
         return offsettedIndexPathForCalendarIndexPath(todayIndexPath)
     }
 
-    var headerReferenceSize: CGSize {
+    private var headerReferenceSize: CGSize {
         let width = calendarCollectionView.frame.size.width
         let size: CGSize
         if showMonthHeaderForVerticalLayout {
@@ -119,6 +108,33 @@ public final class FCalendarView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setup()
+    }
+
+    private func setup() {
+        //        firstWeekday = .monday
+        dimPastDays = true
+        calendarHeaderView.backgroundColor = .white
+        [calendarHeaderView, dayHeaderView, calendarCollectionView].reversed().forEach(addSubview)
+        calendarHeaderView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(Layout.fixedHeaderHorizontalInset)
+            $0.height.equalTo(Layout.monthHeaderHeight)
+        }
+        dayHeaderView.snp.makeConstraints {
+            $0.top.equalTo(calendarHeaderView.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(Layout.weekdayHeaderHorizontalInset)
+            $0.height.equalTo(Layout.weekdayHeaderHeight)
+        }
+        calendarCollectionView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(dayHeaderView)
+            $0.bottom.equalToSuperview()
+            $0.top.equalTo(dayHeaderView.snp.bottom)
+            var height = Layout.dayLabelLength * Layout.maxNumberOfRows
+            if showMonthHeaderForVerticalLayout {
+                height += FCalendarMonthHeaderView.height
+            }
+            $0.height.equalTo(height)
+        }
     }
 
     private func offsettedIndexPathForCalendarIndexPath(_ indexPath: IndexPath) -> IndexPath {
@@ -166,34 +182,7 @@ public final class FCalendarView: UIView {
         calendarCollectionView.scrollRectToVisible(rect, animated: animated)
     }
 
-    private func setup() {
-//        firstWeekday = .monday
-        dimPastDays = true
-        calendarHeaderView.backgroundColor = .white
-        [calendarHeaderView, dayHeaderView, calendarCollectionView].reversed().forEach(addSubview)
-        calendarHeaderView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(Layout.fixedHeaderHorizontalInset)
-            $0.height.equalTo(Layout.monthHeaderHeight)
-        }
-        dayHeaderView.snp.makeConstraints {
-            $0.top.equalTo(calendarHeaderView.snp.bottom)
-            $0.leading.trailing.equalToSuperview().inset(Layout.weekdayHeaderHorizontalInset)
-            $0.height.equalTo(Layout.weekdayHeaderHeight)
-        }
-        calendarCollectionView.snp.makeConstraints {
-            $0.leading.trailing.equalTo(dayHeaderView)
-            $0.bottom.equalToSuperview()
-            $0.top.equalTo(dayHeaderView.snp.bottom)
-            var height = Layout.dayLabelLength * Layout.maxNumberOfRows
-            if showMonthHeaderForVerticalLayout {
-                height += FCalendarMonthHeaderView.height
-            }
-            $0.height.equalTo(height)
-        }
-    }
-
-    func updateHeader(currentIndexPath: IndexPath) {
+    private func updateHeader(currentIndexPath: IndexPath) {
         let indexPath = currentIndexPath
         if updateCalendarHeaderWhileScrolling
             && indexPath.section == displayingSection {
